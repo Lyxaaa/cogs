@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "30446945786",
+    "project_id": "distraction-destruction",
+    "storage_bucket": "distraction-destruction.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30446945786:android:5e15aba7d2e84a616c9043",
+        "android_client_info": {
+          "package_name": "com.distractdestruct.distraction_destruction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30446945786-368ekf43t1okojqvenc4ht8apj6oc4a2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5bPtmREEVPCBt6uoUUUBu2F_fRLKxUGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30446945786-368ekf43t1okojqvenc4ht8apj6oc4a2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
