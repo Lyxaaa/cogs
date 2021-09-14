@@ -7,6 +7,8 @@ void main() {
   runApp(const MyApp());
 }
 
+//Simply launches the app. Anything we need to prepare pre-launch should be
+//done here, everything else can be put in Wrapper and its children
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Display auth info, allowing users to login, register or await auto login
 class Auth extends StatefulWidget {
   const Auth({Key? key}) : super(key: key);
 
