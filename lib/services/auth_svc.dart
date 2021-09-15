@@ -13,7 +13,7 @@ class AuthService {
 
   //Change user from Firebase type to local type
   Stream<AppUser?> get user {
-    return _auth.authStateChanges().map(_localUser); //(User? user) => _localUser(user)
+    return _auth.authStateChanges().map((User? user) => _localUser(user));
   }
 
   //Sign in Anonymously

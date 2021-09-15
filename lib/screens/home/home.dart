@@ -44,11 +44,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // just rebuild anything that needs updating rather than
     // individually changing instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.lightBlue[100],
       appBar: AppBar(
         //Since this was called by _MyHomePageState, which was created
         // in MyHomePage, we can access all of the states variables through
         // widget.#{}
         title: Text(widget.title),
+        backgroundColor: Colors.lightBlueAccent[400],
+        elevation: 0.0,
+        actions: <Widget>[
+          IconButton(onPressed: () {},
+              icon: Icon(Icons.logout)),
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

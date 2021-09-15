@@ -17,7 +17,8 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<AppUser?>(context);
 
     dev.log("Obtained user: " + user.toString());
+    return user == null ? Auth() : Home();
     //Return Home/Auth widget
-    return Auth();
+    //return Auth();
   }
 }
