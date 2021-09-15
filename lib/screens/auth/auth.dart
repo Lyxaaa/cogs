@@ -1,3 +1,4 @@
+import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:flutter/material.dart';
 
 //Display auth info, allowing users to login, register or await auto login
@@ -12,7 +13,7 @@ class _AuthState extends State<Auth> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('auth'),
+      child: SignIn(),
     );
   }
 }

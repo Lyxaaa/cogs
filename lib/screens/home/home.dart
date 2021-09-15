@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:developer' as dev;
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    dev.log("Create Home", name: "screens.home.home");
     return Container(
       child: MyHomePage(title: "Distraction Destruction"),
     );
