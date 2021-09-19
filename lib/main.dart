@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Distraction Part 2: Destruction Boogaloo',
         theme: ThemeData(
           //Theme of app here
