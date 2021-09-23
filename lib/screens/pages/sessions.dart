@@ -12,6 +12,10 @@ class Sessions extends StatefulWidget {
 class _SessionPage extends State<Sessions> {
   int _counter = 0;
 
+  String title() {
+    return "Sessions";
+  }
+
   void _incrementCounter() {
     setState(() {
       // tells Flutter framework that something has changed in this State,

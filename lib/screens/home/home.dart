@@ -42,12 +42,22 @@ class _MyHomePageState extends State<MyHomePage> {
     Friends(),
   ];
 
+  PageController _controller = PageController(
+    initialPage: 0,
+  );
+
   void _onItemTapped(int index) {
     //setState() should be called EVERY TIME something that could impact the UI
     //is changed
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
         //Since this was called by _MyHomePageState, which was created
         // in MyHomePage, we can access all of the states variables through
         // widget.#{}
-        title: Text(widget.title),
+        title: Text((!_controller.hasClients
+            ? _pages[0] : _pages[(_controller.page ?? _controller.initialPage)
+            .round()]).toString()),
         backgroundColor: Colors.lightBlueAccent[400],
         elevation: 0.0,
         //Logout, Profile or Settings button
@@ -72,7 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(
-        child: _pages.elementAt(_selectedIndex),
+        child: PageView(
+          controller: _controller,
+          children: _pages,
+        )
+        // child: _pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const<BottomNavigationBarItem>[
