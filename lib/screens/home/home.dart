@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //Everything in the BottomNavigationBar should go here
   //If we have 3 items in the navbar, this list should have 3 widget elements
-  static const List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     //TODO Change the pages that are linked here
     Sessions(),
     Friends(),
@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //setState() should be called EVERY TIME something that could impact the UI
     //is changed
     setState(() {
+      _controller.jumpToPage(index);
       _selectedIndex = index;
     });
   }
@@ -87,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: PageView(
           controller: _controller,
           children: _pages,
+          onPageChanged: _onItemTapped,
         )
         // child: _pages.elementAt(_selectedIndex),
       ),
