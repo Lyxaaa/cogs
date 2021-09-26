@@ -1,3 +1,4 @@
+import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
@@ -14,13 +15,14 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _signInKey = GlobalKey<FormState>();
+  bool load = false;
   String email = '';
   String password = '';
   String err = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return load ? Load() : Scaffold(
       backgroundColor: Colors.lightBlue[100],
       appBar: AppBar(
         backgroundColor: Colors.lightBlueAccent[400],
@@ -60,13 +62,17 @@ class _SignInState extends State<SignIn> {
               const SizedBox(
                 height: 20.0,
               ),
-              ElevatedButton(
+              ElevatedButton( //Sign in Button
                 onPressed: () async {
                   if (_signInKey.currentState!.validate()) {
+                    setState(() {
+                      load = true;
+                    });
                     dev.log(email, name: "email");
                     dynamic result = await _auth.signIn(email, password);
                     if (result == null) {
                       setState(() {
+                        load = false;
                         err = "Invalid Credentials";
                       });
                     }

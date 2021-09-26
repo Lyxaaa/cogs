@@ -1,3 +1,4 @@
+import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer'as dev;
@@ -14,13 +15,16 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final AuthService _auth = AuthService();
   final _signUpKey = GlobalKey<FormState>();
+  bool load = false;
+  String name = '';
   String email = '';
   String password = '';
+  String verifyPassword = '';
   String err = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return load ? Load() : Scaffold(
       backgroundColor: Colors.lightBlue[100],
       appBar: AppBar(
         backgroundColor: Colors.lightBlueAccent[400],
@@ -36,7 +40,18 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(
                 height: 20.0,
               ),
-              TextFormField(
+              TextFormField( //Input an email
+                validator: (input) => input!.isEmpty ? "enter name": null,
+                onChanged: (input) {
+                  setState(() {
+                    name = input;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              TextFormField( //Input an email
                 validator: (input) => input!.isEmpty ? "enter email": null,
                 onChanged: (input) {
                   setState(() {
@@ -47,7 +62,7 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(
                 height: 20.0,
               ),
-              TextFormField(
+              TextFormField( //Input a password
                 validator: (input) => input!.length < 6 ? "enter password (min 6 characters)": null,
                 onChanged: (input) {
                   setState(() {
@@ -59,13 +74,29 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(
                 height: 20.0,
               ),
-              ElevatedButton(
+              TextFormField( //Verify password was input correctly
+                validator: (input) => input?.compareTo(password) == 0 ? null : "passwords do not match",
+                onChanged: (input) {
+                  setState(() {
+                    verifyPassword = input;
+                  });
+                },
+                obscureText: true,
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              ElevatedButton( //Sign up button
                 onPressed: () async {
                   if (_signUpKey.currentState!.validate()) {
+                    setState(() {
+                      load = true;
+                    });
                     dev.log(email, name: "email");
-                    dynamic result = await _auth.signUp(email, password);
+                    dynamic result = await _auth.signUp(name, email, password);
                     if (result == null) {
                       setState(() {
+                        load = false;
                         err = "Invalid Credentials";
                       });
                     }

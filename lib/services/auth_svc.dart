@@ -1,3 +1,4 @@
+import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as dev;
@@ -41,10 +42,15 @@ class AuthService {
   }
 
   //Register w/ email/pw
-  Future signUp(String email, String password) async {
+  Future signUp(String name, String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
+
+      //set up userPreferences for new account in Database
+      if (user != null) {
+        await DatabaseService(user: user, uid: user.uid).updateUserPreferences(name);
+      }
       return _localUser(user);
     } catch (e) {
       dev.log(e.toString(), name: "auth_svc.signUp");
