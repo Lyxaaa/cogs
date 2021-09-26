@@ -9,7 +9,7 @@ class Sessions extends StatefulWidget {
   _SessionPage createState() => _SessionPage();
 }
 
-class _SessionPage extends State<Sessions> {
+class _SessionPage extends State<Sessions> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
 
   String title() {
@@ -26,6 +26,7 @@ class _SessionPage extends State<Sessions> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.lightBlue[100],
       body: Center(
@@ -65,4 +66,8 @@ class _SessionPage extends State<Sessions> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

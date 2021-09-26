@@ -13,9 +13,8 @@ class FriendList extends StatefulWidget {
 class _FriendListState extends State<FriendList> {
   @override
   Widget build(BuildContext context) {
-    dev.log("Creating friend list", name: "FriendList");
     final friends = Provider.of<QuerySnapshot?>(context);
-    //dev.log(friends.docs.toString(), name: "Friends");
+    dev.log(friends?.docs.toString() ?? "Friends Empty", name: "screens.pages.friend_list.build");
 
     return Container();
   }

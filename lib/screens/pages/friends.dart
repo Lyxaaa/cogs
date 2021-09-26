@@ -15,7 +15,7 @@ class Friends extends StatefulWidget {
   _FriendList createState() => _FriendList();
 }
 
-class _FriendList extends State<Friends> {
+class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -28,6 +28,7 @@ class _FriendList extends State<Friends> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamProvider<QuerySnapshot?>.value(
       value: DatabaseService().userPreferences, //TODO Change to friend list database collection
       initialData: null,
@@ -72,4 +73,8 @@ class _FriendList extends State<Friends> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

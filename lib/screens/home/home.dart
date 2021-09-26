@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMixin {
   final AuthService _auth = AuthService();
 
   int _selectedIndex = 0;
@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     //DatabaseService().userPreferences.map((querySnapshot) => querySnapshot.docs.map((doc) => Task))
     // rerunning build methods is extremely fast
     // just rebuild anything that needs updating rather than
@@ -128,4 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
