@@ -1,19 +1,19 @@
 import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev;
+import 'dart:developer'as dev;
 
-class SignIn extends StatefulWidget {
+class SignUp extends StatefulWidget {
   final Function toggle;
 
-  SignIn({required this.toggle});
+  SignUp({required this.toggle});
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final AuthService _auth = AuthService();
-  final _signInKey = GlobalKey<FormState>();
+  final _signUpKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
   String err = '';
@@ -25,12 +25,12 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.lightBlueAccent[400],
         elevation: 0.0,
-        title: const Text("Sign in to Distraction Destruction"),
+        title: const Text("Sign up to Distraction Destruction"),
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
-          key: _signInKey,
+          key: _signUpKey,
           child: Column(
             children: <Widget>[
               const SizedBox(
@@ -61,9 +61,9 @@ class _SignInState extends State<SignIn> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  if (_signInKey.currentState!.validate()) {
+                  if (_signUpKey.currentState!.validate()) {
                     dev.log(email, name: "email");
-                    dynamic result = await _auth.signIn(email, password);
+                    dynamic result = await _auth.signUp(email, password);
                     if (result == null) {
                       setState(() {
                         err = "Invalid Credentials";
@@ -72,7 +72,7 @@ class _SignInState extends State<SignIn> {
                   }
                 },
                 child: const Text(
-                  "Sign In",
+                  "Register",
                   style: TextStyle(color: Colors.white),
                 ),
                 //style: ButtonStyle(),
@@ -87,11 +87,10 @@ class _SignInState extends State<SignIn> {
                   alignment: FractionalOffset.bottomCenter,
                   child: ElevatedButton(
                     onPressed: () {
-                      dev.log("Switch pressed");
                       widget.toggle();
                     },
                     child: const Text(
-                      "Don't have an account? Register Here",
+                      "Back to Sign In",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -104,17 +103,3 @@ class _SignInState extends State<SignIn> {
     );
   }
 }
-
-/*
-ElevatedButton(
-          child: const Text("Sign in Anonymously"),
-          onPressed: () async {
-            dynamic result = await _auth.signInAnon();
-            if (result == null) {
-              dev.log("Error signing in Anonymously", name: "screens.auth.sign_in");
-            } else {
-              dev.log("Signed in Anonymously: " + result.uid, name: "screens.auth.sign_in");
-            }
-          },
-        ),
- */

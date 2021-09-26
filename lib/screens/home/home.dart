@@ -1,6 +1,7 @@
 import 'package:distraction_destruction/screens/auth/auth.dart';
 import 'package:distraction_destruction/screens/pages/friends.dart';
 import 'package:distraction_destruction/screens/pages/sessions.dart';
+import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
 
@@ -31,6 +32,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final AuthService _auth = AuthService();
+
   int _selectedIndex = 0;
 
   //Everything in the BottomNavigationBar should go here
@@ -80,8 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
         //Logout, Profile or Settings button
         //TODO Implement functionality, this should either logout or take the user somewhere
         actions: <Widget>[
-          IconButton(onPressed: () {},
-              icon: Icon(Icons.logout)),
+          IconButton(onPressed: () async {
+            await _auth.signOut();
+          },
+              icon: Icon(Icons.logout),
+          ),
         ],
       ),
       body: Center(

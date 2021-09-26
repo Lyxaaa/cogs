@@ -29,8 +29,36 @@ class AuthService {
   }
 
   //Sign in w/ email/pw
+  Future signIn(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      return _localUser(user);
+    } catch (e) {
+      dev.log(e.toString(), name: "auth_svc.signUp");
+      return null;
+    }
+  }
 
   //Register w/ email/pw
+  Future signUp(String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      return _localUser(user);
+    } catch (e) {
+      dev.log(e.toString(), name: "auth_svc.signUp");
+      return null;
+    }
+  }
 
   //Sign out
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      dev.log(e.toString(), name:"services.auth.signOut", error: e);
+      return null;
+    }
+  }
 }
