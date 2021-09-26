@@ -37,6 +37,7 @@ class _SignInState extends State<SignIn> {
                 height: 20.0,
               ),
               TextFormField(
+                //TODO decoration: put all the fancy ladida designer stuff here :)
                 validator: (input) => input!.isEmpty ? "enter email": null,
                 onChanged: (input) {
                   setState(() {
