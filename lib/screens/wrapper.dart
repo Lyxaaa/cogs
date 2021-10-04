@@ -1,5 +1,5 @@
 import 'package:distraction_destruction/screens/auth/auth.dart';
-import 'package:distraction_destruction/screens/home/home.dart';
+import 'package:distraction_destruction/screens/main_scaffold/main_scaffold.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;

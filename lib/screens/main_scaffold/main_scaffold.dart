@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dev.log("Create Home", name: "screens.home.home");
+    dev.log("Create Home", name: "screens.main_scaffold.main_scaffold");
     return Container(
       child: MyHomePage(title: "Distraction Destruction"),
     );
@@ -37,6 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMixin {
   final AuthService _auth = AuthService();
+  final DatabaseService database = DatabaseService();
 
   int _selectedIndex = 0;
 
@@ -75,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMi
     // rerunning build methods is extremely fast
     // just rebuild anything that needs updating rather than
     // individually changing instances of widgets.
-    return StreamProvider<QuerySnapshot?>.value ( //TODO set loading screen here to prevent error screen from momentarily showing
-      value: DatabaseService().userPreferences,
+    return StreamProvider<DocumentSnapshot?>.value ( //TODO set loading screen here to prevent error screen from momentarily showing
+      value: database.userDetailsStream,
       initialData: null,
       child: Scaffold(
         backgroundColor: Colors.lightBlue[100],
