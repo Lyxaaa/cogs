@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:distraction_destruction/screens/pages/friend_list.dart';
