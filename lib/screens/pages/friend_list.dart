@@ -16,6 +16,30 @@ class _FriendListState extends State<FriendList> {
     final friends = Provider.of<QuerySnapshot?>(context);
     dev.log(friends?.docs.toString() ?? "Friends Empty", name: "screens.pages.friend_list.build");
 
-    return Container();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Row(
+        children: <Widget>[
+          const Icon(
+            Icons.person,
+            size: 40,
+          ),
+          const SizedBox(width: 20,),
+          Column(
+            children: const [
+              Text("Friend Name"),
+              Text(
+                  "Extra Info (Last session date)",
+                style: TextStyle(
+                  fontSize: 10,
+                ),
+              )
+            ],
+          ),
+          const Spacer(),
+          Text("100"),
+        ],
+      ),
+    );
   }
 }
