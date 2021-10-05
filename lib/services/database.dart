@@ -17,6 +17,11 @@ class DatabaseService {
     return _databaseService;
   }
 
+  //Do not use this method, it should only ever be touched upon signout
+  void unlockDatabase() {
+    _lock = false;
+  }
+
   //DatabaseService({this.uid});
   
   // Get reference to a collection in the database

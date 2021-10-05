@@ -69,6 +69,7 @@ class AuthService {
   //Sign out
   Future signOut() async {
     try {
+      DatabaseService().unlockDatabase();
       return await _auth.signOut();
     } catch (e) {
       dev.log(e.toString(), name:"services.auth.signOut", error: e);
