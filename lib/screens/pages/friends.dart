@@ -11,11 +11,25 @@ class Friends extends StatefulWidget {
   const Friends({Key? key}) : super(key: key);
 
   @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    // TODO: implement toString
+    return "Your Friends";
+  }
+
+  @override
   _FriendList createState() => _FriendList();
 }
 
 class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
+
+  bool _add = false;
+
+  void _addFriend() {
+    setState(() {
+      _add = !_add;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -24,6 +38,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
       _counter++;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,23 +64,23 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text(
-                    'You have pushed the button this many times:',
+                  Text(
+                    widget.toString(),
                   ),
                   Text(
                     '$name',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   Expanded(
-                      child: FriendList(showAll: false,)
+                      child: FriendList(showAll: _add,)
                   ),
                 ],
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
+              onPressed: _addFriend,
+              tooltip: 'Add Friend',
+              child: const Icon(Icons.person_add),
             ),
           );
         } else {

@@ -2,28 +2,24 @@ import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:flutter/material.dart';
 
 //Display auth info, allowing users to login, register or await auto login
-class Sessions extends StatefulWidget {
-  const Sessions({Key? key}) : super(key: key);
+class Stats extends StatefulWidget {
+  const Stats({Key? key}) : super(key: key);
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     // TODO: implement toString
-    return "Welcome Back";
+    return "Your Stats";
   }
 
   @override
-  _SessionPage createState() => _SessionPage();
+  _StatsPage createState() => _StatsPage();
 }
 
-class _SessionPage extends State<Sessions> with AutomaticKeepAliveClientMixin {
+class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
-  bool _session = false;
 
-  void inSession(bool inSession) {
-    _session = inSession;
-  }
   String title() {
-    return _session ? "Session in Progress" : "Welcome Back ";
+    return "Your Stats";
   }
 
   void _incrementCounter() {

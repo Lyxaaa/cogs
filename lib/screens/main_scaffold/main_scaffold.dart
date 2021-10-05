@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/auth.dart';
 import 'package:distraction_destruction/screens/pages/friends.dart';
 import 'package:distraction_destruction/screens/pages/sessions.dart';
+import 'package:distraction_destruction/screens/pages/stats.dart';
 import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,9 +46,9 @@ class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMi
   //If we have 3 items in the navbar, this list should have 3 widget elements
   static final List<Widget> _pages = <Widget>[
     //TODO Change the pages that are linked here
+    Friends(),
     Sessions(),
-    Friends(),
-    Friends(),
+    Stats(),
   ];
 
   PageController _controller = PageController(

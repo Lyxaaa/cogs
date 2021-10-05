@@ -1,4 +1,5 @@
 import 'package:distraction_destruction/screens/builders/friend_item.dart';
+import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,7 +85,7 @@ class _FriendListState extends State<FriendList> {
           initialData: null,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return const Text("Something went wrong");
+              return Load();
             } else if (snapshot.hasData || snapshot.data != null) {
               return ListView.separated(
                   itemBuilder: (context, index) {
@@ -93,14 +94,29 @@ class _FriendListState extends State<FriendList> {
                     var userInfo = snapshot.data!.docs[index].data() as Map<String, dynamic>;
                     Timestamp lastSession = userInfo['last_session'];
                     int score = userInfo['score'];
-                    return FriendItem(
-                        uid: uid, lastSession: lastSession, score: score, name: uid,);
+                    return FutureBuilder<DocumentSnapshot?>(
+                    future: DatabaseService().getUserDocStream(uid),
+                    initialData: null,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Load();
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        dev.log(snapshot.data!.data().toString(), name: "friend_item.dart");
+                        var userInfo = snapshot.data!.data() as Map<String,
+                            dynamic>; //TODO Find out how to reference a doc cell
+                        return FriendItem(
+                          uid: uid, lastSession: lastSession, score: score, name: userInfo['name'],);
+                      } else {
+                        return Load();
+                      }
+                    }
+                    );
                   },
                   separatorBuilder: (context, index) =>
                   const SizedBox(height: 20.0),
                   itemCount: snapshot.data!.docs.length);
             } else {
-              return const Text("A different something went wrong");
+              return Load();
             }
           }
       );
