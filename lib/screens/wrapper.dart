@@ -1,5 +1,6 @@
 import 'package:distraction_destruction/screens/auth/auth.dart';
 import 'package:distraction_destruction/screens/main_scaffold/main_scaffold.dart';
+import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
@@ -16,6 +17,9 @@ class Wrapper extends StatelessWidget {
 
     //Forces anything that relies on the status of User to be triggered upon change
     final user = Provider.of<AppUser?>(context);
+    if (user != null && user.uid != null) {
+      DatabaseService(uid: user.uid);
+    }
 
     dev.log("Obtained user: " + user.toString());
     return user == null ? Auth() : Home();

@@ -35,7 +35,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
-      if (user != null) {
+      if (user != null && user.uid != null) {
         DatabaseService database = DatabaseService(uid: user.uid);
         Object? userData = (await database.userCollection.doc(user.uid).get()).data();
         dev.log(userData.toString(), name: "User Data Object");
@@ -55,7 +55,7 @@ class AuthService {
       user?.updateDisplayName(name);
 
       //set up userPreferences for new account in Database
-      if (user != null) {
+      if (user != null && user.uid != null) {
         DatabaseService database = DatabaseService(uid: user.uid);
         await database.createUser(user.uid, name);
       }

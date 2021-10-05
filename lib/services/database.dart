@@ -10,8 +10,10 @@ class DatabaseService {
   DatabaseService._internal();
 
   factory DatabaseService({String? uid}) {
-    _databaseService.uid = uid;
-    _databaseService._lock = true;
+    if (!_databaseService._lock) {
+      _databaseService.uid = uid;
+      _databaseService._lock = true;
+    }
     return _databaseService;
   }
 
@@ -39,21 +41,31 @@ class DatabaseService {
     return userCollection.snapshots();
   }
 
-  DocumentReference get updateUserDetails {
-    return userCollection.doc(uid);
-  }
-
   Stream<QuerySnapshot> get friendsCollectionStream {
     return userCollection.doc(uid).collection('friends').snapshots();
   }
 
-  Future<DocumentSnapshot<Object?>> getUserDataFuture(String? uid) {
+  Future<DocumentSnapshot> getUserDocStream(String uid) {
+    return userCollection.doc(uid).get();
+  }
+
+  DocumentReference get updateUserDetails {
+    return userCollection.doc(uid);
+  }
+
+
+
+  Future<DocumentSnapshot<Object?>> get userDataFuture {
+    return userCollection.doc(uid).get();
+  }
+
+  Future<DocumentSnapshot<Object?>> getSpecificUserDataFuture(String? uid) {
     return userCollection.doc(uid).get();
   }
 
   void addFriend(String uid) {
     userCollection.doc(this.uid).collection('friends').doc(uid).set({
-      'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
+      //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
       'score': 0,
       'last_session': Timestamp.now()
     });
