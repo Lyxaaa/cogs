@@ -8,7 +8,8 @@ import 'dart:developer' as dev;
 //  );
 // },
 class SessionPopup extends StatefulWidget {
-  const SessionPopup({Key? key}) : super(key: key);
+  final Widget contents;
+  const SessionPopup({Key? key, required this.contents}) : super(key: key);
 
   @override
   _SessionPopupState createState() => _SessionPopupState();
@@ -31,11 +32,9 @@ class _SessionPopupState extends State<SessionPopup> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Colors.white),
+                        color: Colors.lightBlue[100]),
                     padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                    child: const Text("New Session",
-                        style: TextStyle(fontSize: 16),
-                        textAlign: TextAlign.center),
+                    child: widget.contents,
                   ),
                 ),
                 Container(height: 48)

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:distraction_destruction/screens/builders/friend_list.dart';
+import 'package:distraction_destruction/screens/builders/session_popup.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,13 @@ class Friends extends StatefulWidget {
 
 class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
-
+  Widget addFriend = SizedBox(height: 0,);
   bool _add = false;
 
   void _addFriend() {
     setState(() {
       _add = !_add;
+      addFriend = SessionPopup(contents: FriendList(showAll: true));
     });
   }
 
@@ -72,13 +74,13 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   Expanded(
-                      child: FriendList(showAll: _add,)
+                      child: FriendList(showAll: false,)
                   ),
                 ],
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: _addFriend,
+              onPressed: () {showDialog(context: context, builder: (_) => SessionPopup(contents: FriendList(showAll: true)));},
               tooltip: 'Add Friend',
               child: const Icon(Icons.person_add),
             ),
