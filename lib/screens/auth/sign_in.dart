@@ -39,7 +39,13 @@ class _SignInState extends State<SignIn> {
                 height: 20.0,
               ),
               TextFormField(
-                //TODO decoration: put all the fancy ladida designer stuff here :)
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person_outline_rounded),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Enter your email'
+                ),
                 validator: (input) => input!.isEmpty ? "enter email": null,
                 onChanged: (input) {
                   setState(() {
@@ -51,6 +57,13 @@ class _SignInState extends State<SignIn> {
                 height: 20.0,
               ),
               TextFormField(
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock_outline_rounded),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Enter your password'
+                ),
                 validator: (input) => input!.length < 6 ? "enter password (min 6 characters)": null,
                 onChanged: (input) {
                   setState(() {

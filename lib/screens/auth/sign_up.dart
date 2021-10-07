@@ -41,6 +41,13 @@ class _SignUpState extends State<SignUp> {
                 height: 20.0,
               ),
               TextFormField( //Input an email
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person_outline_rounded),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Enter your username'
+                ),
                 validator: (input) => input!.isEmpty ? "enter name": null,
                 onChanged: (input) {
                   setState(() {
@@ -52,6 +59,13 @@ class _SignUpState extends State<SignUp> {
                 height: 20.0,
               ),
               TextFormField( //Input an email
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person_outline_rounded),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Enter your email'
+                ),
                 validator: (input) => input!.isEmpty ? "enter email": null,
                 onChanged: (input) {
                   setState(() {
@@ -63,6 +77,13 @@ class _SignUpState extends State<SignUp> {
                 height: 20.0,
               ),
               TextFormField( //Input a password
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock_outline_rounded),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Enter your password'
+                ),
                 validator: (input) => input!.length < 6 ? "enter password (min 6 characters)": null,
                 onChanged: (input) {
                   setState(() {
@@ -75,6 +96,13 @@ class _SignUpState extends State<SignUp> {
                 height: 20.0,
               ),
               TextFormField( //Verify password was input correctly
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock_open_outlined),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Repeat your password'
+                ),
                 validator: (input) => input?.compareTo(password) == 0 ? null : "passwords do not match",
                 onChanged: (input) {
                   setState(() {
