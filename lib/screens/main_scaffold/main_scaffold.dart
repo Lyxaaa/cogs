@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage>
   PageController _controller = PageController(
     initialPage: 0,
   );
-
+  
   void _onItemTapped(int index) {
     //setState() should be called EVERY TIME something that could impact the UI
     //is changed

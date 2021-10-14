@@ -28,6 +28,12 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   final DatabaseService database = DatabaseService();
   final _textFieldController = TextEditingController();
 
+  @override
+  void dispose() {
+    _textFieldController.dispose();
+    super.dispose();
+  }
+
 
   void _addFriend() {
     setState(() {
