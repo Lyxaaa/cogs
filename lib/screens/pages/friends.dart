@@ -79,7 +79,8 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
           name = info['name'];
           return Scaffold(
             backgroundColor: Colors.lightBlue[100],
-            body: Center(
+            body: Container(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
               // Center is a layout widget. It takes a single child and positions it
               // in the middle of the parent.
               child: Column(
@@ -88,29 +89,53 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                   Text(
                     widget.toString(),
                   ),
-                  TextFormField(
-                    controller: _textFieldController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Search Your Friends',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () { setState(() {
-                          _textFieldController.clear();
-                        });},
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(),
+                        flex: 1,
                       ),
-                    ),
-                    onChanged: (input) {
-                      setState(() {
-                        _textFieldController.text = input;
-                      });
-                    },
+                      Expanded(child:
+                        TextFormField(
+                          controller: _textFieldController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Filter Friends',
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.clear),
+                              onPressed: () { setState(() {
+                                _textFieldController.clear();
+                              });},
+                            ),
+                          ),
+                          onChanged: (input) {
+                            setState(() {
+                              _textFieldController.text = input;
+                            });
+                          },
+                        ),
+                        flex: 2,
+                      ),
+                      Expanded(
+                        child: SizedBox(),
+                        flex: 1,)
+                    ],
                   ),
+                  SizedBox(height: 20.0,),
                   Expanded(
-                      child: FriendList(showAll: false, searchQuery: _textFieldController.text,)
+                    flex: 6,
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white),
+                      child: FriendList(showAll: false, searchQuery: _textFieldController.text,),
+                    ),
                   ),
                 ],
               ),
