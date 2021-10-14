@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/auth.dart';
+import 'package:distraction_destruction/screens/builders/friend_list.dart';
+import 'package:distraction_destruction/screens/builders/session_popup.dart';
 import 'package:distraction_destruction/screens/pages/friends.dart';
 import 'package:distraction_destruction/screens/pages/sessions.dart';
 import 'package:distraction_destruction/screens/pages/stats.dart';
@@ -36,7 +38,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMixin {
+class _MyHomePageState extends State<MyHomePage>
+    with AutomaticKeepAliveClientMixin {
   final AuthService _auth = AuthService();
   final DatabaseService database = DatabaseService();
 
@@ -77,7 +80,8 @@ class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMi
     // rerunning build methods is extremely fast
     // just rebuild anything that needs updating rather than
     // individually changing instances of widgets.
-    return StreamProvider<DocumentSnapshot?>.value ( //TODO set loading screen here to prevent error screen from momentarily showing
+    return StreamProvider<DocumentSnapshot?>.value(
+      //TODO set loading screen here to prevent error screen from momentarily showing
       value: database.userDetailsStream,
       initialData: null,
       child: Scaffold(
@@ -86,31 +90,54 @@ class _MyHomePageState extends State<MyHomePage> with AutomaticKeepAliveClientMi
           //Since this was called by _MyHomePageState, which was created
           // in MyHomePage, we can access all of the states variables through
           // widget.#{}
-          title: Text(/*DatabaseService().userInfo.get().toString() + */(!_controller.hasClients
-              ? _pages[0] : _pages[(_controller.page ?? _controller.initialPage)
-              .round()]).toString()),
-          backgroundColor: Colors.lightBlueAccent[400],
+          title: Text(/*DatabaseService().userInfo.get().toString() + */
+              (!_controller.hasClients
+                      ? _pages[0]
+                      : _pages[(_controller.page ?? _controller.initialPage)
+                          .round()])
+                  .toString()),
+          backgroundColor: Colors.transparent,
           elevation: 0.0,
           //Logout, Profile or Settings button
           //TODO Implement functionality, this should either logout or take the user somewhere
           actions: <Widget>[
-            IconButton(onPressed: () async {
-              await _auth.signOut();
-            },
-                icon: Icon(Icons.logout),
+            IconButton(
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              icon: Icon(Icons.account_circle),
+              color: Colors.black87,
+            ),
+            IconButton(
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              icon: Icon(Icons.person_search),
+              color: Colors.black87,
+            ),
+            const Expanded(child: SizedBox()),
+            IconButton(
+              onPressed: () async {
+                showDialog(
+                    context: context,
+                    builder: (_) =>
+                        SessionPopup(contents: FriendList(showAll: true)));
+              },
+              icon: Icon(Icons.person_add),
+              color: Colors.black87,
             ),
           ],
         ),
         body: Center(
-          child: PageView(
-            controller: _controller,
-            children: _pages,
-            onPageChanged: _onItemTapped,
-          )
-          // child: _pages.elementAt(_selectedIndex),
-        ),
+            child: PageView(
+          controller: _controller,
+          children: _pages,
+          onPageChanged: _onItemTapped,
+        )
+            // child: _pages.elementAt(_selectedIndex),
+            ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const<BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.schedule),
               label: 'Sessions',
