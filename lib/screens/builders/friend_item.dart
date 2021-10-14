@@ -1,9 +1,12 @@
+import 'package:distraction_destruction/screens/builders/start_session.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'dart:developer' as dev;
+
+import 'overlay_popup.dart';
 
 class FriendItem extends StatefulWidget {
   final String uid;
@@ -51,7 +54,14 @@ class _FriendItemState extends State<FriendItem> {
         ),
       );
     } else {
-      return Container(
+      return InkWell(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (_) =>
+                  OverlayPopup(contents: StartSession(name: widget.name, uid: widget.uid,)));
+        },
+          child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         child: Row(
           children: <Widget>[
@@ -85,6 +95,7 @@ class _FriendItemState extends State<FriendItem> {
             ),
           ],
         ),
+          ),
       );
     }
   }

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:distraction_destruction/screens/builders/friend_list.dart';
-import 'package:distraction_destruction/screens/builders/session_popup.dart';
+import 'package:distraction_destruction/screens/builders/overlay_popup.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   void _addFriend() {
     setState(() {
       _add = !_add;
-      addFriend = SessionPopup(contents: FriendList(showAll: true));
+      addFriend = OverlayPopup(contents: FriendList(showAll: true));
     });
   }
 
@@ -79,11 +79,11 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                 ],
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {showDialog(context: context, builder: (_) => SessionPopup(contents: FriendList(showAll: true)));},
+            /*floatingActionButton: FloatingActionButton(
+              onPressed: () {showDialog(context: context, builder: (_) => OverlayPopup(contents: FriendList(showAll: true)));},
               tooltip: 'Add Friend',
               child: const Icon(Icons.person_add),
-            ),
+            ),*/
           );
         } else {
           return Text("Something else went wrong");

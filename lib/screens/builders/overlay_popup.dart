@@ -7,15 +7,15 @@ import 'dart:developer' as dev;
 //    builder: (BuildContext context) => createDialog(context),
 //  );
 // },
-class SessionPopup extends StatefulWidget {
+class OverlayPopup extends StatefulWidget {
   final Widget contents;
-  const SessionPopup({Key? key, required this.contents}) : super(key: key);
+  const OverlayPopup({Key? key, required this.contents}) : super(key: key);
 
   @override
-  _SessionPopupState createState() => _SessionPopupState();
+  _OverlayPopupState createState() => _OverlayPopupState();
 }
 
-class _SessionPopupState extends State<SessionPopup> {
+class _OverlayPopupState extends State<OverlayPopup> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -39,7 +39,7 @@ class _SessionPopupState extends State<SessionPopup> {
                 ),
                 Container(height: 48)
               ]),
-              Positioned.fill(
+              /*Positioned.fill(
                   bottom: 0, // Half of button size, approximately?
                   child: Align(
                       alignment: Alignment.bottomCenter,
@@ -52,7 +52,7 @@ class _SessionPopupState extends State<SessionPopup> {
                               padding: MaterialStateProperty.all(
                                   const EdgeInsets.all(40)),
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.amber)))))
+                                  MaterialStateProperty.all(Colors.amber))))) */
             ])));
   }
 }

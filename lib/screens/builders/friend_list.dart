@@ -28,14 +28,14 @@ class _FriendListState extends State<FriendList> {
       return StreamBuilder<QuerySnapshot?>(
           stream: database.userCollectionStream,
           initialData: null,
-          builder: (context, userCollectionsnapshot) {
-            if (userCollectionsnapshot.hasError) {
+          builder: (context, userCollectionSnapshot) {
+            if (userCollectionSnapshot.hasError) {
               return const Text("Something went wrong");
-            } else if (userCollectionsnapshot.hasData || userCollectionsnapshot.data != null) {
+            } else if (userCollectionSnapshot.hasData || userCollectionSnapshot.data != null) {
                 return ListView.separated(
                     itemBuilder: (context, index) {
-                      var uid = userCollectionsnapshot.data!.docs[index].id;
-                      var userList = userCollectionsnapshot.data!.docs[index].data() as Map<
+                      var uid = userCollectionSnapshot.data!.docs[index].id;
+                      var userList = userCollectionSnapshot.data!.docs[index].data() as Map<
                           String,
                           dynamic>;
                       String name = userList['name'];
@@ -45,7 +45,7 @@ class _FriendListState extends State<FriendList> {
                     },
                     separatorBuilder: (context, index) =>
                     const SizedBox(height: 20.0),
-                    itemCount: userCollectionsnapshot.data!.docs.length);
+                    itemCount: userCollectionSnapshot.data!.docs.length);
             } else {
               return const Text("A different something went wrong");
             }

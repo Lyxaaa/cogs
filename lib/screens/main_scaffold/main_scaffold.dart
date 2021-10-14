@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/auth.dart';
 import 'package:distraction_destruction/screens/builders/friend_list.dart';
-import 'package:distraction_destruction/screens/builders/session_popup.dart';
+import 'package:distraction_destruction/screens/builders/overlay_popup.dart';
 import 'package:distraction_destruction/screens/pages/friends.dart';
 import 'package:distraction_destruction/screens/pages/sessions.dart';
 import 'package:distraction_destruction/screens/pages/stats.dart';
@@ -117,11 +117,11 @@ class _MyHomePageState extends State<MyHomePage>
             ),
             const Expanded(child: SizedBox()),
             IconButton(
-              onPressed: () async {
+              onPressed: () {
                 showDialog(
                     context: context,
                     builder: (_) =>
-                        SessionPopup(contents: FriendList(showAll: true)));
+                        OverlayPopup(contents: FriendList(showAll: true)));
               },
               icon: Icon(Icons.person_add),
               color: Colors.black87,
