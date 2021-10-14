@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 
 //Display auth info, allowing users to login, register or await auto login
 class Friends extends StatefulWidget {
-  const Friends({Key? key}) : super(key: key);
+  final bool add;
+  const Friends({Key? key, this.add=false}) : super(key: key);
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -58,6 +59,46 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
     });
   }
 
+  Row filterFriends(String text) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        Expanded(child:
+        TextFormField(
+          controller: _textFieldController,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15)
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            labelText: text,
+            suffixIcon: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () { setState(() {
+                _textFieldController.clear();
+              });},
+            ),
+          ),
+          onChanged: (input) {
+            setState(() {
+              _textFieldController.text = input;
+            });
+          },
+        ),
+          flex: 5,
+        ),
+        Expanded(
+          child: SizedBox(),
+          flex: 1,)
+      ],
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,54 +119,15 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
           var info = snapshot.data!.data() as Map<String, dynamic>;
           name = info['name'];
           return Scaffold(
-            backgroundColor: Colors.lightBlue[100],
+            backgroundColor: widget.add ? Colors.transparent : Colors.lightBlue[100],
             body: Container(
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+              padding: EdgeInsets.fromLTRB(30, 5, 30, 30),
               // Center is a layout widget. It takes a single child and positions it
               // in the middle of the parent.
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    widget.toString(),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(),
-                        flex: 1,
-                      ),
-                      Expanded(child:
-                        TextFormField(
-                          controller: _textFieldController,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15)
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            labelText: 'Filter Friends',
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.clear),
-                              onPressed: () { setState(() {
-                                _textFieldController.clear();
-                              });},
-                            ),
-                          ),
-                          onChanged: (input) {
-                            setState(() {
-                              _textFieldController.text = input;
-                            });
-                          },
-                        ),
-                        flex: 2,
-                      ),
-                      Expanded(
-                        child: SizedBox(),
-                        flex: 1,)
-                    ],
-                  ),
+                  filterFriends(widget.add ? 'Add Friend' : 'Filter Friends'),
                   SizedBox(height: 20.0,),
                   Expanded(
                     flex: 6,
@@ -134,7 +136,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.white),
-                      child: FriendList(showAll: false, searchQuery: _textFieldController.text,),
+                      child: FriendList(add: widget.add, searchQuery: _textFieldController.text,),
                     ),
                   ),
                 ],

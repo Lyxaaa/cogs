@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage>
   PageController _controller = PageController(
     initialPage: 0,
   );
-  
+
   void _onItemTapped(int index) {
     //setState() should be called EVERY TIME something that could impact the UI
     //is changed
@@ -72,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage>
     _controller.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +91,6 @@ class _MyHomePageState extends State<MyHomePage>
           //Since this was called by _MyHomePageState, which was created
           // in MyHomePage, we can access all of the states variables through
           // widget.#{}
-          title: Text(/*DatabaseService().userInfo.get().toString() + */
-              (!_controller.hasClients
-                      ? _pages[0]
-                      : _pages[(_controller.page ?? _controller.initialPage)
-                          .round()])
-                  .toString()),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           //Logout, Profile or Settings button
@@ -108,20 +103,35 @@ class _MyHomePageState extends State<MyHomePage>
               icon: Icon(Icons.account_circle),
               color: Colors.black87,
             ),
-            IconButton(
+            /*IconButton(
               onPressed: () async {
                 await _auth.signOut();
               },
               icon: Icon(Icons.person_search),
               color: Colors.black87,
+            ),*/
+            Expanded(
+              child: Center(
+                child: Text(/*DatabaseService().userInfo.get().toString() + */
+                (!_controller.hasClients
+                    ? _pages[0]
+                    : _pages[(_controller.page ?? _controller.initialPage)
+                    .round()])
+                    .toString(),
+                  style: const TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-            const Expanded(child: SizedBox()),
             IconButton(
               onPressed: () {
                 showDialog(
                     context: context,
                     builder: (_) =>
-                        OverlayPopup(contents: FriendList(showAll: true)));
+                        OverlayPopup(
+                            contents: Friends(add: true,),));
               },
               icon: Icon(Icons.person_add),
               color: Colors.black87,

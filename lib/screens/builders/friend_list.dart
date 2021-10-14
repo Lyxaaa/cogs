@@ -8,11 +8,10 @@ import 'dart:developer' as dev;
 
 class FriendList extends StatefulWidget {
   final bool showAll;
-  final bool search;
+  final bool add;
   final String searchQuery;
-  const FriendList({Key? key, this.showAll=false, this.searchQuery=''})
-      : search = searchQuery != null,
-        super(key: key);
+  const FriendList({Key? key, this.showAll=false, this.searchQuery='', this.add=false})
+      : super(key: key);
 
   @override
   _FriendListState createState() => _FriendListState();
@@ -23,83 +22,71 @@ class _FriendListState extends State<FriendList> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.showAll) {
-      //Displays ALL users registered in the app, mostly for debug/testing purposes
+    bool show = true;
+      //Displays all users that the current user is friends with
       return StreamBuilder<QuerySnapshot?>(
-          stream: database.userCollectionStream,
+          stream: widget.add ? database.userCollectionStream : database.friendsCollectionStream,
+          //TODO Change to friend list database collection
           initialData: null,
           builder: (context, userCollectionSnapshot) {
             if (userCollectionSnapshot.hasError) {
-              return const Text("Something went wrong");
-            } else if (userCollectionSnapshot.hasData || userCollectionSnapshot.data != null) {
-                return ListView.separated(
-                    itemBuilder: (context, index) {
-                      var uid = userCollectionSnapshot.data!.docs[index].id;
-                      var userList = userCollectionSnapshot.data!.docs[index].data() as Map<
-                          String,
-                          dynamic>;
-                      String name = userList['name'];
-                      return FriendItem(
-                        uid: uid,
-                        name: name,);
-                    },
-                    separatorBuilder: (context, index) =>
-                    const SizedBox(height: 20.0),
-                    itemCount: userCollectionSnapshot.data!.docs.length);
-            } else {
-              return const Text("A different something went wrong");
-            }
-          }
-      );
-    } else {
-      //Displays all users that the current user is friends with
-      return StreamBuilder<QuerySnapshot?>(
-          stream: database.friendsCollectionStream,
-          //TODO Change to friend list database collection
-          initialData: null,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
               return Load();
-            } else if (snapshot.hasData || snapshot.data != null) {
+            } else if (userCollectionSnapshot.hasData || userCollectionSnapshot.data != null) {
               return ListView.separated(
                   itemBuilder: (context, index) {
-                    var uid = snapshot.data!.docs[index].id;
+                    var uid = userCollectionSnapshot.data!.docs[index].id;
                     dev.log(uid, name: "User ID Check");
-                    var userInfo = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                    Timestamp lastSession = userInfo['last_session'];
-                    int score = userInfo['score'];
-                    return FutureBuilder<DocumentSnapshot?>(
-                    future: DatabaseService().getUserDocStream(uid),
-                    initialData: null,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Load();
-                      } else if (snapshot.hasData || snapshot.data != null) {
-                        dev.log(snapshot.data!.data().toString(), name: "friend_item.dart");
-                        var userInfo = snapshot.data!.data() as Map<String,
-                            dynamic>; //TODO Find out how to reference a doc cell
-                        bool show = true;
-                        if (widget.searchQuery.length > 2
-                            && !userInfo['name'].toString().toLowerCase()
-                                .contains(widget.searchQuery)) {
-                          show = false;
-                        }
-                        return FriendItem(
-                          uid: uid, lastSession: lastSession, score: score, name: userInfo['name'], show: show,);
-                      } else {
-                        return Load();
+                    var friendInfo = userCollectionSnapshot.data!.docs[index].data() as Map<String, dynamic>;
+                    if (widget.add) {
+                      show = true;
+                      if (widget.searchQuery.length > 2
+                          && !friendInfo['name'].toString().toLowerCase()
+                              .contains(widget.searchQuery)) {
+                        show = false;
                       }
+                      return FriendItem(
+                        uid: uid,
+                        name: friendInfo['name'],
+                        show: show,
+                      );
+                    } else {
+                      return FutureBuilder<DocumentSnapshot?>(
+                          future: DatabaseService().getUserDocStream(uid),
+                          initialData: null,
+                          builder: (context, userInfoSnapshot) {
+                            if (userInfoSnapshot.hasError) {
+                              return Load();
+                            } else if (userInfoSnapshot.hasData || userInfoSnapshot.data != null) {
+                              dev.log(userInfoSnapshot.data!.data().toString(), name: "friend_item.dart");
+                              var userInfo = userInfoSnapshot.data!.data() as Map<String,
+                                  dynamic>; //TODO Find out how to reference a doc cell
+                              show = true;
+                              if (widget.searchQuery.length > 2
+                                  && !userInfo['name'].toString().toLowerCase()
+                                      .contains(widget.searchQuery)) {
+                                show = false;
+                              }
+                              return FriendItem(
+                                uid: uid,
+                                lastSession: friendInfo['last_session'],
+                                score: friendInfo['score'],
+                                name: userInfo['name'],
+                                show: show,
+                              );
+                            } else {
+                              return Load();
+                            }
+                          }
+                      );
                     }
-                    );
                   },
                   separatorBuilder: (context, index) =>
-                  const SizedBox(height: 20.0),
-                  itemCount: snapshot.data!.docs.length);
+                  SizedBox(height: show ? 20.0 : 0.0),
+                  itemCount: userCollectionSnapshot.data!.docs.length);
             } else {
               return Load();
             }
           }
       );
     }
-  }
 }
