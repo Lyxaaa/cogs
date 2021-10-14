@@ -37,7 +37,7 @@ class _OverlayPopupState extends State<OverlayPopup> {
                     child: widget.contents,
                   ),
                 ),
-                Container(height: 48)
+                /*Container(height: 48)*/
               ]),
               /*Positioned.fill(
                   bottom: 0, // Half of button size, approximately?

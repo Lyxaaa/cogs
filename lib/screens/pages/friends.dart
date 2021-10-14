@@ -25,6 +25,9 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
   Widget addFriend = SizedBox(height: 0,);
   bool _add = false;
+  final DatabaseService database = DatabaseService();
+  final _textFieldController = TextEditingController();
+
 
   void _addFriend() {
     setState(() {
@@ -41,14 +44,24 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
     });
   }
 
+  String search = '';
+
+  void setSearch(String search) {
+    setState(() {
+      this.search = search;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AppUser?>(context);
-    final DatabaseService database = DatabaseService();
     String name = '';
 
     super.build(context);
+    //Puts the cursor at the end of the search box after the setState build reset
+    _textFieldController.selection = TextSelection.fromPosition(TextPosition(
+        offset: _textFieldController.text.length));
     return FutureBuilder<DocumentSnapshot?>(
       future: database.userDataFuture, //TODO Change to friend list database collection
       initialData: null,
@@ -69,12 +82,29 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                   Text(
                     widget.toString(),
                   ),
-                  Text(
-                    '$name',
-                    style: Theme.of(context).textTheme.headline4,
+                  TextFormField(
+                    controller: _textFieldController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Search Your Friends',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () { setState(() {
+                          _textFieldController.clear();
+                        });},
+                      ),
+                    ),
+                    onChanged: (input) {
+                      setState(() {
+                        _textFieldController.text = input;
+                      });
+                    },
                   ),
                   Expanded(
-                      child: FriendList(showAll: false,)
+                      child: FriendList(showAll: false, searchQuery: _textFieldController.text,)
                   ),
                 ],
               ),
