@@ -136,25 +136,40 @@ class _MyHomePageState extends State<MyHomePage>
         )
             // child: _pages.elementAt(_selectedIndex),
             ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: 'Sessions',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Friends',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only( topRight: Radius.circular(30), topLeft: Radius.circular(30))
+          ),
+        child: Material(
+          elevation: 0.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)),
+          child: BottomNavigationBar(
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            iconSize: 24,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.people, semanticLabel: "Friends Page"),
+                label: 'Friends',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.alarm_on, semanticLabel: "Start Session"),
+                label: 'Sessions',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart, semanticLabel: "Statistics Page"),
+                label: 'Stats',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+          ),
         // This trailing comma makes auto-formatting nicer for build methods.
+        ))
       ),
     );
   }
