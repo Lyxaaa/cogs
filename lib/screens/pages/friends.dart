@@ -23,8 +23,6 @@ class Friends extends StatefulWidget {
 }
 
 class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
-  int _counter = 0;
-  Widget addFriend = SizedBox(height: 0,);
   bool _add = false;
   final DatabaseService database = DatabaseService();
   final _textFieldController = TextEditingController();
@@ -33,22 +31,6 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   void dispose() {
     _textFieldController.dispose();
     super.dispose();
-  }
-
-
-  void _addFriend() {
-    setState(() {
-      _add = !_add;
-      addFriend = OverlayPopup(contents: FriendList(showAll: true));
-    });
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      // tells Flutter framework that something has changed in this State,
-      // which causes it to rerun the build method below
-      _counter++;
-    });
   }
 
   String search = '';
