@@ -1,7 +1,7 @@
 # team-theta
 repo for Team Theta DECO3500 Project, Semester 2 2021
 
-## Installation
+## Deployment Instructions
 ### Installing Flutter
 https://flutter.dev/docs/get-started/install
 From this link, make sure to download flutter v2.5.x
