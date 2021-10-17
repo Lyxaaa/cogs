@@ -25,9 +25,9 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return load ? Load() : Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      backgroundColor: Theme.of(context).canvasColor,
       appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent[400],
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0.0,
         title: const Text("Sign up to Distraction Destruction"),
       ),
@@ -45,7 +45,7 @@ class _SignUpState extends State<SignUp> {
                     prefixIcon: Icon(Icons.person_outline_rounded),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.white,
+                    // fillColor: Colors.white,
                     labelText: 'Enter your username'
                 ),
                 validator: (input) => input!.isEmpty ? "enter name": null,
@@ -63,7 +63,7 @@ class _SignUpState extends State<SignUp> {
                     prefixIcon: Icon(Icons.person_outline_rounded),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.white,
+                    // fillColor: Colors.white,
                     labelText: 'Enter your email'
                 ),
                 validator: (input) => input!.isEmpty ? "enter email": null,
@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                     prefixIcon: Icon(Icons.lock_outline_rounded),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.white,
+                    // fillColor: Colors.white,
                     labelText: 'Enter your password'
                 ),
                 validator: (input) => input!.length < 6 ? "enter password (min 6 characters)": null,
@@ -100,7 +100,7 @@ class _SignUpState extends State<SignUp> {
                     prefixIcon: Icon(Icons.lock_open_outlined),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.white,
+                    // fillColor: Colors.white,
                     labelText: 'Repeat your password'
                 ),
                 validator: (input) => input?.compareTo(password) == 0 ? null : "passwords do not match",
@@ -150,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     child: const Text(
                       "Back to Sign In",
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

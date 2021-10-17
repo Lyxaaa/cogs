@@ -54,7 +54,7 @@ class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
 
   Scaffold askToAccept(String sessionUid) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      // backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

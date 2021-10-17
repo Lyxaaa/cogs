@@ -23,9 +23,9 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return load ? Load() : Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      // backgroundColor: Colors.lightBlue[100],
       appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent[400],
+        // backgroundColor: Colors.lightBlueAccent[400],
         elevation: 0.0,
         title: const Text("Sign in to Distraction Destruction"),
       ),
@@ -43,7 +43,7 @@ class _SignInState extends State<SignIn> {
                     prefixIcon: Icon(Icons.person_outline_rounded),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.white,
+                    // fillColor: Colors.white,
                     labelText: 'Enter your email'
                 ),
                 validator: (input) => input!.isEmpty ? "enter email": null,
@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
                     prefixIcon: Icon(Icons.lock_outline_rounded),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.white,
+                    // fillColor: Colors.white,
                     labelText: 'Enter your password'
                 ),
                 validator: (input) => input!.length < 6 ? "enter password (min 6 characters)": null,
@@ -93,7 +93,7 @@ class _SignInState extends State<SignIn> {
                 },
                 child: const Text(
                   "Sign In",
-                  style: TextStyle(color: Colors.white),
+                  // style: TextStyle(color: Colors.white),
                 ),
                 //style: ButtonStyle(),
               ),
@@ -101,6 +101,7 @@ class _SignInState extends State<SignIn> {
               Text(
                 err,
                 style: TextStyle(color: Colors.red, fontSize: 14.0),
+                // style: TextStyle(color: Theme.of(context).textTheme., fontSize: 14.0)
               ),
               Expanded(
                 child: Align(
@@ -112,7 +113,6 @@ class _SignInState extends State<SignIn> {
                     },
                     child: const Text(
                       "Don't have an account? Register Here",
-                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

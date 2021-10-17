@@ -32,8 +32,9 @@ class _OverlayPopupState extends State<OverlayPopup> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Colors.white),
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                          color: Theme.of(context).colorScheme.surface,
+                    ),
+                    // padding: EdgeInsets.fromLTRB(20,20,20,20),
                     child: widget.contents,
                   ),
                 ),

@@ -69,7 +69,7 @@ class _ActiveSessionPage extends State<ActiveSession>
 
   Scaffold askToAccept(String sessionUid) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      // backgroundColor: Colors.lightBlue[100],
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +113,7 @@ class _ActiveSessionPage extends State<ActiveSession>
 
   Scaffold waitingForAccept(String sessionUid) {
       return Scaffold(
-        backgroundColor: Colors.lightBlue[100],
+        // backgroundColor: Colors.lightBlue[100],
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -140,7 +140,7 @@ class _ActiveSessionPage extends State<ActiveSession>
 
   Scaffold active(String sessionUid) {
       return Scaffold(
-        backgroundColor: Colors.lightBlue[100],
+        // backgroundColor: Colors.lightBlue[100],
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

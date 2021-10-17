@@ -60,7 +60,8 @@ class _StartSessionState extends State<StartSession> {
                 _selectTime(context);
               },
               child: Text(
-                "${selectedTime.hour} hours, ${selectedTime.minute} minutes",
+                ((selectedTime.hour > 0) ? "${selectedTime.hour} hours, " : "") +
+                    "${selectedTime.minute} minutes",
                 style: TextStyle(fontSize: 15.0),
               ),
               style: ButtonStyle(),
@@ -77,6 +78,7 @@ class _StartSessionState extends State<StartSession> {
                     selectedTime = TimeOfDay(hour: hours, minute: mins);
                   });
                 },
+
                 icon: Icon(Icons.add_circle_outline))
           ],
         ),

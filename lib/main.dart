@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
 import 'package:provider/provider.dart';
+import 'package:distraction_destruction/style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +29,16 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Distraction Part 2: Destruction Boogaloo',
-        theme: ThemeData(
-          //Theme of app here
-          //Remember to take advantage of hot reload
-          primarySwatch: Colors.blue,
-        ),
+        // theme: darkTheme,
+        themeMode: ThemeMode.system,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        // theme: ThemeData(
+        //   scaffoldBackgroundColor: MaterialColor.,
+        //   canvasColor: AppTheme.notWhite,
+        //   accentColor: AppTheme.orange,
+        //   textTheme: AppTheme.textTheme,
+        // ),
         home: Wrapper(),
       ),
     );
