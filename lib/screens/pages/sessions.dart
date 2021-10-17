@@ -19,6 +19,19 @@ class _SessionPage extends State<Sessions> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
   bool _session = false;
 
+  List<SessionCardArguments> cardsShown = [
+    SessionCardArguments(
+        header: CardHeaderArguments(icon:const Icon(Icons.clear), title: "Bopis", subtitle: "Parts"),
+        body: CardBodyArguments(),
+        footer: CardFooterArguments()
+    ),
+    SessionCardArguments(
+        header: CardHeaderArguments(icon:const Icon(Icons.clear), title: "Bepis", subtitle: "Parts")
+    ),
+    SessionCardArguments(
+    )
+  ]; // TODO: generate this based on user's state
+
   void inSession(bool inSession) {
     _session = inSession;
   }
@@ -34,50 +47,183 @@ class _SessionPage extends State<Sessions> with AutomaticKeepAliveClientMixin {
     });
   }
 
-  @override
+  List<SessionCard> _buildGridCards(List<SessionCardArguments> cardArgs) {
+    List<SessionCard> cards = [];
+    for (SessionCardArguments i in cardArgs) {
+          cards.add(SessionCard.withArguments(i));
+    }
+    return cards;
+  }
+
+
   Widget build(BuildContext context) {
     super.build(context);
+
+
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        body: Center(
+          child:
+          ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              children: _buildGridCards(cardsShown),
+          ),
+        )
     );
+
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   super.build(context);
+  //   return Scaffold(
+  //       body: Center(
+  //         child:
+  //       ListView(
+  //           shrinkWrap: true,
+  //           padding: const EdgeInsets.symmetric(horizontal: 30.0),
+  //           children: _buildGridCards(3) // Replace
+  //       ),
+  //       )
+  //   );
   }
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+}
+
+class _CardHeaderArguments {
+
+}
+
+class CardHeaderArguments {
+  final Icon? icon;
+  final String? title;
+  final String? subtitle;
+  bool show = true;
+
+  CardHeaderArguments(
+      {
+        this.icon,
+        this.title,
+        this.subtitle,
+        this.show = true
+      });
+
+  // const CardHeaderArguments(this.icon, this.title, this.subtitle, {show});
+  CardHeaderArguments.hide(this.icon, this.title, this.subtitle) : show = false;
+  // CardHeaderArguments.check({icon, title, subtitle, show}) :
+  //       this(icon, title, subtitle,
+  //         show: show ?? ((icon ?? title ?? subtitle) != null)); // check if visible
+
+  bool get empty {
+    return ((icon ?? title ?? subtitle) != null);
+  }
+}
+
+class CardBodyArguments {
+  final Widget? body;
+  bool show = true;
+
+  CardBodyArguments({this.body});
+
+  bool get empty {
+    return body != null;
+  }
+}
+
+class CardFooterArguments {
+  final List<Widget>? footer;
+  bool show = true;
+  CardFooterArguments({this.footer});
+
+  bool get empty {
+    return footer != null;
+  }
+}
+
+class SessionCardArguments {
+  final CardHeaderArguments? header;
+  final CardBodyArguments? body;
+  final CardFooterArguments? footer;
+
+  const SessionCardArguments({this.header, this.body, this.footer});
+}
+
+class SessionCard extends Card {
+  // final List<String> list;
+
+  const SessionCard({
+    Key? key,
+    this.header,
+    this.body,
+    this.footer
+  }) : super(key: key);
+
+  SessionCard.withArguments(SessionCardArguments arguments)
+      : this(header: arguments.header, body: arguments.body, footer: arguments.footer);
+  final CardHeaderArguments? header;
+  final CardBodyArguments? body;
+  final CardFooterArguments? footer;
+
+  bool get showHeading {
+    return header?.show ?? header?.empty ?? false;
+  }
+
+  bool get showBody {
+    return body?.show ?? body?.empty ?? false;
+  }
+
+  bool get showFooter {
+    return footer?.show ?? footer?.empty ?? false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    List<Widget> parts = [];
+
+    if (showHeading) {
+      parts.add(
+          ListTile(
+            leading: header?.icon,
+            title: (header?.title != null) ? Text(header!.title!) : null,
+            subtitle: (header?.subtitle != null) ? Text(header!.subtitle!) : null,
+            onTap: () {},
+            onLongPress: () {},
+          ));
+    }
+
+    if (showBody) {
+      parts.add(
+        Padding(                      /* ========== CONTENT =========== */
+          padding: const EdgeInsets.all(16.0),
+          child: body?.body,
+        ),
+      );
+    }
+
+    if (showFooter) {
+      parts.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: footer?.footer ?? [],
+        )
+      );
+    }
+
+    if (parts.isEmpty) {
+      parts.add(Padding(padding:EdgeInsets.zero));
+    }
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ...parts         /* ========== BUTTONS =========== */
+        ],
+      ),
+    );
+  }
 }

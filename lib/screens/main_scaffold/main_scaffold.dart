@@ -86,12 +86,13 @@ class _MyHomePageState extends State<MyHomePage>
       value: database.userDetailsStream,
       initialData: null,
       child: Scaffold(
-        backgroundColor: Colors.lightBlue[100],
+        backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           //Since this was called by _MyHomePageState, which was created
           // in MyHomePage, we can access all of the states variables through
           // widget.#{}
-          backgroundColor: Colors.transparent,
+          // backgroundColor: Colors.transparent,
           elevation: 0.0,
           //Logout, Profile or Settings button
           //TODO Implement functionality, this should either logout or take the user somewhere
@@ -101,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage>
                 await _auth.signOut();
               },
               icon: Icon(Icons.account_circle),
-              color: Colors.black87,
+              // color: Colors.black87,
             ),
             /*IconButton(
               onPressed: () async {
@@ -130,11 +131,11 @@ class _MyHomePageState extends State<MyHomePage>
                 showDialog(
                     context: context,
                     builder: (_) =>
-                        OverlayPopup(
+                        const OverlayPopup(
                             contents: Friends(add: true,),));
               },
               icon: Icon(Icons.person_add),
-              color: Colors.black87,
+              // color: Colors.black87,
             ),
           ],
         ),
@@ -147,20 +148,24 @@ class _MyHomePageState extends State<MyHomePage>
             // child: _pages.elementAt(_selectedIndex),
             ),
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.only( topRight: Radius.circular(30), topLeft: Radius.circular(30))
           ),
         child: Material(
+          color: Theme.of(context).colorScheme.primary,
           elevation: 0.0,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0)),
           child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             iconSize: 24,
             elevation: 0,
             backgroundColor: Colors.transparent,
+            fixedColor: Theme.of(context).colorScheme.onBackground,
+            // selectedIconTheme: Theme.of(context).iconTheme.copyWith(color: Theme.of(context).colorScheme.secondary),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.people, semanticLabel: "Friends Page"),

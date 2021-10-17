@@ -75,7 +75,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                 borderRadius: BorderRadius.circular(15)
             ),
             filled: true,
-            fillColor: Colors.white,
+            // fillColor: Colors.white,
             labelText: text,
             suffixIcon: IconButton(
               icon: Icon(Icons.clear),
@@ -119,9 +119,9 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
           var info = snapshot.data!.data() as Map<String, dynamic>;
           name = info['name'];
           return Scaffold(
-            backgroundColor: widget.add ? Colors.transparent : Colors.lightBlue[100],
+            // backgroundColor: widget.add ? Colors.transparent : Theme.of(context).colorScheme.background,
             body: Container(
-              padding: EdgeInsets.fromLTRB(30, 5, 30, 30),
+              padding: const EdgeInsets.symmetric(horizontal:30, vertical:5),
               // Center is a layout widget. It takes a single child and positions it
               // in the middle of the parent.
               child: Column(
@@ -135,7 +135,8 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                       width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Colors.white),
+                          // color: Colors.white
+                      ),
                       child: FriendList(add: widget.add, searchQuery: _textFieldController.text,),
                     ),
                   ),

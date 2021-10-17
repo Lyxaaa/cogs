@@ -34,7 +34,7 @@ class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      // backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
