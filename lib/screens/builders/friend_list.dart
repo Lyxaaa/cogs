@@ -38,11 +38,11 @@ class _FriendListState extends State<FriendList> {
                     dev.log(uid, name: "User ID Check");
                     var friendInfo = userCollectionSnapshot.data!.docs[index].data() as Map<String, dynamic>;
                     if (widget.add) {
-                      show = true;
+                      show = false;
                       if (widget.searchQuery.length > 2
-                          && !friendInfo['name'].toString().toLowerCase()
+                          && friendInfo['name'].toString().toLowerCase()
                               .contains(widget.searchQuery)) {
-                        show = false;
+                        show = true;
                       }
                       return FriendItem(
                         uid: uid,

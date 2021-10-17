@@ -136,6 +136,7 @@ class _StartSessionState extends State<StartSession> {
                       selectedTime.minute,
                       _breaks);
                 }
+                //TODO else {} Need to indicate to the user that the other user is already in an active session
                 Navigator.pop(context, true);
               },
               child: StreamBuilder<DocumentSnapshot?>(

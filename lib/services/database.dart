@@ -72,9 +72,17 @@ class DatabaseService {
     return userCollection.doc(uid).get();
   }
 
+  Stream<DocumentSnapshot> getSessionStream(String uid) {
+    return sessionCollection.doc(uidHash(this.uid!, uid).toString()).snapshots();
+  }
+
   void addFriend(String uid) {
     userCollection.doc(this.uid).collection('friends').doc(uid).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
+      'score': 0,
+      'last_session': Timestamp.now(),
+    });
+    userCollection.doc(uid).collection('friends').doc(this.uid).set({
       'score': 0,
       'last_session': Timestamp.now(),
     });
@@ -121,9 +129,6 @@ class DatabaseService {
   }
 
   void startSessionGlobal(String uid, Timestamp endTime, int hours, int minutes, int breaks) async {
-    await sessionCollection.doc('testab').set({
-      'test': 'ab',
-    });
     print("start session: " + uid);
     await sessionCollection.doc(uidHash(this.uid!, uid).toString()).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
