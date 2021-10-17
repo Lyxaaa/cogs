@@ -62,7 +62,6 @@ class _ActiveSessionPage extends State<ActiveSession>
                       return active(userInfo['session_uid']);
                       print("session info: " + sessionInfo.toString());
                     }
-
                   }
                 });
           }
