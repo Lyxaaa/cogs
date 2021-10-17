@@ -1,7 +1,7 @@
 # Team Theta DECO3500 Project
 ### Wiki Outline
-[General Overview (Home)](../../wiki)
-[Design Process Overview](../../Design-Process-Overview)
+[General Overview (Home)](../../wiki)  
+[Design Process Overview](../../wiki/Design-Process-Overview)  
 
 ## Deployment Instructions
 ### Web Access
@@ -48,4 +48,3 @@ Return to the original instructions, continuing at flutter doctor
 ### Tutorials
 https://flutter.dev/docs/get-started/codelab
  
- [Home](../../wiki)
