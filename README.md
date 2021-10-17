@@ -1,5 +1,7 @@
-# team-theta
-repo for Team Theta DECO3500 Project, Semester 2 2021
+# Team Theta DECO3500 Project
+### Wiki Outline
+[General Overview (Home)](../../wiki)
+[Design Process Overview](../../Design-Process-Overview)
 
 ## Deployment Instructions
 ### Web Access
@@ -17,24 +19,24 @@ Android Studio is more established.
 Visual Studio Code is newly supported.
 
 ### Obtaining the Android SDK
-With Android Studio: https://developer.android.com/studio/intro/update#sdk-manager
+With Android Studio: https://developer.android.com/studio/intro/update#sdk-manager  
 
-If not running Android Studio, you will need to download the Android SDK manually. https://developer.android.com/studio#command-tools
+If not running Android Studio, you will need to download the Android SDK manually. https://developer.android.com/studio#command-tools  
 
-Move the download to a preferred <location>
-(E.g., a directory for development tools.)
-Create a directory structure like so: <location>\android-sdk\cmdline-tools\
-Enter the directory.
-Unpack the download, renaming the folder from cmdline-tools to latest
-The directory structure should now look like: <location>\android-sdk\cmdline-tools\latest
-Add the environment variables:
-ANDROID_SDK_ROOT  <location>\android-sdk
-ANDROID_HOME <location>\android-sdk
-In a terminal, cd into latest/bin folder.
-Run the following command.
-sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
-
-Return to the original instructions, continuing at flutter doctor
+Move the download to a preferred <location>  
+(E.g., a directory for development tools.)  
+Create a directory structure like so: <location>\android-sdk\cmdline-tools\  
+Enter the directory.  
+Unpack the download, renaming the folder from cmdline-tools to latest  
+The directory structure should now look like: <location>\android-sdk\cmdline-tools\latest  
+Add the environment variables:  
+ANDROID_SDK_ROOT  <location>\android-sdk  
+ANDROID_HOME <location>\android-sdk  
+In a terminal, cd into latest/bin folder.  
+Run the following command.  
+sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"  
+ 
+Return to the original instructions, continuing at flutter doctor  
 
 ### Android Installation
 [Official Documentation on Device Installation](https://flutter.dev/docs/deployment/android)  
