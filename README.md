@@ -37,11 +37,11 @@ sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 Return to the original instructions, continuing at flutter doctor
 
 ### Android Installation
-[Official Documentation on Device Installation](https://flutter.dev/docs/deployment/android)
- `cd project-directory-root`
- `flutter build apk --split-per-abi`
- Ensure your android device is plugged in
- `flutter install`
+[Official Documentation on Device Installation](https://flutter.dev/docs/deployment/android)  
+ `cd project-directory-root`  
+ `flutter build apk --split-per-abi`  
+ Ensure your android device is plugged in  
+ `flutter install`  
 
 ### Tutorials
 https://flutter.dev/docs/get-started/codelab
