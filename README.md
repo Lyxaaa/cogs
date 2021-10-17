@@ -2,12 +2,15 @@
 repo for Team Theta DECO3500 Project, Semester 2 2021
 
 ## Deployment Instructions
+### Web Access
+You can access the latest build at both [Host A]() and [Host B]()
+
 ### Installing Flutter
 https://flutter.dev/docs/get-started/install
 From this link, make sure to download flutter v2.5.x
 
 Follow the instructions until... 
- flutter doctor  
+flutter doctor  
 At this point, consider which IDE you’ll work in: Android Studio, or Visual Studio Code.
 
 Android Studio is more established.
@@ -33,7 +36,14 @@ sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
 Return to the original instructions, continuing at flutter doctor
 
-## Tutorials
+### Android Installation
+[Official Documentation on Device Installation](https://flutter.dev/docs/deployment/android)
+ `cd project-directory-root`
+ `flutter build apk --split-per-abi`
+ Ensure your android device is plugged in
+ `flutter install`
+
+### Tutorials
 https://flutter.dev/docs/get-started/codelab
  
  [Home](../../wiki)
