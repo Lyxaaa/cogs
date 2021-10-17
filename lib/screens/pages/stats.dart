@@ -40,12 +40,12 @@ class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
             return StreamBuilder<DocumentSnapshot?>(
                 stream: database.getSessionStream(userInfo['session_uid']),
                 builder: (context, sessionSnapshot) {
-                  if (!sessionSnapshot.hasData) {
-                    return Load();
+                  if (!sessionSnapshot.hasData || !sessionSnapshot.data!.exists) {
+                    return Text('you have no session history');
                   } else {
                     var sessionInfo = sessionSnapshot.data!.data() as Map<String, dynamic>;
                     bool active = sessionInfo[userInfo['session_uid']];
-                    return Text('you have no session history');
+                    return Text(sessionInfo['breaks'].toString());
                   }
                 });
           }
