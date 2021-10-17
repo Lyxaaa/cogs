@@ -143,14 +143,11 @@ class _StartSessionState extends State<StartSession> {
                   stream: database.getUserDocStream(widget.uid),
                   initialData: null,
                   builder: (context, snapshot) {
-                    print(widget.uid + " :session active check: " + _userInSession.toString());
                     if (!snapshot.hasData) {
-                      print("session not active");
                       return Load();
                     } else {
                       var otherUser = snapshot.data!.data() as Map<String, dynamic>;
                       _userInSession = otherUser['session_active'];
-                      print("session active");
                       return Text('Start');
                     }
                   }

@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/sign_in.dart';
+import 'package:distraction_destruction/screens/global/load.dart';
+import 'package:distraction_destruction/services/database.dart';
 import 'package:flutter/material.dart';
 
 //Display auth info, allowing users to login, register or await auto login
@@ -16,59 +19,132 @@ class Stats extends StatefulWidget {
 }
 
 class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
-  int _counter = 0;
+  DatabaseService database = DatabaseService();
 
   String title() {
     return "Your Stats";
   }
 
-  void _incrementCounter() {
-    setState(() {
-      // tells Flutter framework that something has changed in this State,
-      // which causes it to rerun the build method below
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    return StreamBuilder<DocumentSnapshot?>(
+      //TODO set loading screen here to prevent error screen from momentarily showing
+        stream: database.userDetailsStream,
+        initialData: null,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Load();
+          } else {
+            var userInfo = snapshot.data!.data() as Map<String, dynamic>;
+            return StreamBuilder<DocumentSnapshot?>(
+                stream: database.getSessionStream(userInfo['session_uid']),
+                builder: (context, sessionSnapshot) {
+                  if (!sessionSnapshot.hasData) {
+                    return Load();
+                  } else {
+                    var sessionInfo = sessionSnapshot.data!.data() as Map<String, dynamic>;
+                    bool active = sessionInfo[userInfo['session_uid']];
+                    return Text('you have no session history');
+                  }
+                });
+          }
+        });
+  }
+
+  Scaffold askToAccept(String sessionUid) {
     return Scaffold(
       backgroundColor: Colors.lightBlue[100],
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Text("Would you like to start a session with user?"), //TODO pull users name down here without another DB call
+            ElevatedButton(
+                onPressed: () {
+                  database.acceptSession(sessionUid);
+                },
+                // TODO: Fire off session start from here
+                child: Text("Start".toUpperCase()),
+                style: ButtonStyle(
+                    shape:
+                    MaterialStateProperty.all(CircleBorder()),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.all(40)),
+                    backgroundColor:
+                    MaterialStateProperty.all(Colors.amber)
+                )
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ElevatedButton(
+                onPressed: () {
+                  database.endSession(sessionUid);
+                },
+                // TODO: Fire off session start from here
+                child: Text("Decline".toUpperCase()),
+                style: ButtonStyle(
+                    shape:
+                    MaterialStateProperty.all(CircleBorder()),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.all(40)),
+                    backgroundColor:
+                    MaterialStateProperty.all(Colors.amber)
+                )
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+
+  Scaffold waitingForAccept(String sessionUid) {
+    return Scaffold(
+      backgroundColor: Colors.lightBlue[100],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Waiting for user to accept session"), //TODO pull users name down here without another DB call
+            ElevatedButton(
+                onPressed: () {
+                  database.endSession(sessionUid);
+                },
+                // TODO: Fire off session start from here
+                child: Text("Cancel".toUpperCase()),
+                style: ButtonStyle(
+                    shape:
+                    MaterialStateProperty.all(CircleBorder()),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.all(40)),
+                    backgroundColor:
+                    MaterialStateProperty.all(Colors.amber))),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Scaffold active(String sessionUid) {
+    return Scaffold(
+      backgroundColor: Colors.lightBlue[100],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+                onPressed: () {
+                  database.endSession(sessionUid);
+                },
+                // TODO: Fire off session start from here
+                child: Text("Stop".toUpperCase()),
+                style: ButtonStyle(
+                    shape:
+                    MaterialStateProperty.all(CircleBorder()),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.all(40)),
+                    backgroundColor:
+                    MaterialStateProperty.all(Colors.amber))),
+          ],
+        ),
       ),
     );
   }

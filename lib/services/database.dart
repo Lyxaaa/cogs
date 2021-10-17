@@ -129,7 +129,6 @@ class DatabaseService {
   }
 
   void startSessionGlobal(String uid, Timestamp endTime, int hours, int minutes, int breaks) async {
-    print("start session: " + uid);
     await sessionCollection.doc(uidHash(this.uid!, uid).toString()).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
       this.uid.toString(): true,

@@ -60,7 +60,6 @@ class _ActiveSessionPage extends State<ActiveSession>
                       return askToAccept(userInfo['session_uid']);
                     } else {
                       return active(userInfo['session_uid']);
-                      print("session info: " + sessionInfo.toString());
                     }
                   }
                 });
@@ -109,11 +108,6 @@ class _ActiveSessionPage extends State<ActiveSession>
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -141,11 +135,6 @@ class _ActiveSessionPage extends State<ActiveSession>
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
       );
     }
 
@@ -171,11 +160,6 @@ class _ActiveSessionPage extends State<ActiveSession>
                       MaterialStateProperty.all(Colors.amber))),
             ],
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
         ),
       );
     }
