@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -25,14 +26,25 @@ class _StartSessionState extends State<StartSession> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          'New Session with ' + widget.name,
-          style: TextStyle(fontSize: 20.0),
+        const Expanded(
+          child: SizedBox(),
+          flex: 1,
         ),
         Text(
+          'New Session with ' + widget.name,
+          style: const TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        const Text(
           'Set Session Length',
           style: TextStyle(
-            fontSize: 12.0,
+            fontSize: 16.0,
           ),
         ),
         Row(
@@ -62,7 +74,7 @@ class _StartSessionState extends State<StartSession> {
               child: Text(
                 ((selectedTime.hour > 0) ? "${selectedTime.hour} hours, " : "") +
                     "${selectedTime.minute} minutes",
-                style: TextStyle(fontSize: 15.0),
+                style: const TextStyle(fontSize: 15.0),
               ),
               style: ButtonStyle(),
             ),
@@ -82,10 +94,14 @@ class _StartSessionState extends State<StartSession> {
                 icon: Icon(Icons.add_circle_outline))
           ],
         ),
-        Text(
+        const Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        const Text(
           'Set Breaks',
           style: TextStyle(
-            fontSize: 12.0,
+            fontSize: 16.0,
           ),
         ),
         Row(
@@ -97,7 +113,7 @@ class _StartSessionState extends State<StartSession> {
                     _breaks = _breaks == 0 ? 0 : _breaks - 1;
                   });
                 },
-                icon: Icon(Icons.remove_circle_outline)),
+                icon: const Icon(Icons.remove_circle_outline)),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -111,9 +127,9 @@ class _StartSessionState extends State<StartSession> {
               },
               child: Text(
                 _breaks.toString(),
-                style: TextStyle(fontSize: 15.0),
+                style: const TextStyle(fontSize: 15.0),
               ),
-              style: ButtonStyle(),
+              style: const ButtonStyle(),
             ),
             IconButton(
               onPressed: () {
@@ -121,41 +137,51 @@ class _StartSessionState extends State<StartSession> {
                   _breaks = _breaks + 1;
                 });
               },
-              icon: Icon(Icons.add_circle_outline),
-            ),
-            Expanded(
-              child: SizedBox(),
-              flex: 1,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (!_userInSession) {
-                  print('starting session');
-                  database.startSession(
-                      widget.uid,
-                      Timestamp.now(),
-                      selectedTime.hour,
-                      selectedTime.minute,
-                      _breaks);
-                }
-                //TODO else {} Need to indicate to the user that the other user is already in an active session
-                Navigator.pop(context, true);
-              },
-              child: StreamBuilder<DocumentSnapshot?>(
-                  stream: database.getUserDocStream(widget.uid),
-                  initialData: null,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Load();
-                    } else {
-                      var otherUser = snapshot.data!.data() as Map<String, dynamic>;
-                      _userInSession = otherUser['session_active'];
-                      return Text('Start');
-                    }
-                  }
-                  ),
+              icon: const Icon(Icons.add_circle_outline),
             ),
           ],
+        ),
+        const Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        FloatingActionButton(
+          onPressed: () {
+            if (!_userInSession) {
+              print('starting session');
+              database.startSession(
+                  widget.uid,
+                  Timestamp.now(),
+                  selectedTime.hour,
+                  selectedTime.minute,
+                  _breaks);
+            }
+            //TODO else {} Need to indicate to the user that the other user is already in an active session
+            Navigator.pop(context, true);
+          },
+          child: StreamBuilder<DocumentSnapshot?>(
+              stream: database.getUserDocStream(widget.uid),
+              initialData: null,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Load();
+                } else {
+                  var otherUser = snapshot.data!.data() as Map<String, dynamic>;
+                  _userInSession = otherUser['session_active'];
+                  return const Text(
+                      'Start',
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.bold,
+                      )
+                  );
+                }
+              }
+          ),
+        ),
+        const Expanded(
+          child: SizedBox(),
+          flex: 3,
         ),
       ],
     );
