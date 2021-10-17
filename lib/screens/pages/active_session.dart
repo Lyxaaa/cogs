@@ -1,3 +1,4 @@
+import 'package:quiver/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:distraction_destruction/screens/global/load.dart';
@@ -22,6 +23,10 @@ class _ActiveSessionPage extends State<ActiveSession>
     with AutomaticKeepAliveClientMixin {
   DatabaseService database = DatabaseService();
   int _counter = 0;
+  int _current = 0;
+  bool _timerStarted = false;
+  late CountdownTimer _timer;
+  var _sub;
 
   String title() {
     return "Session in Progress";
@@ -69,7 +74,7 @@ class _ActiveSessionPage extends State<ActiveSession>
                     } else if (!sessionInfo[database.uid]) {
                       return askToAccept(userInfo['session_uid']);
                     } else {
-                      return active(userInfo['session_uid']);
+                      return active(userInfo['session_uid'], hours, minutes, startTime, Timestamp.now().seconds);
                     }
                   }
                 });
@@ -145,13 +150,15 @@ class _ActiveSessionPage extends State<ActiveSession>
       );
     }
 
-  Scaffold active(String sessionUid) {
+  Scaffold active(String sessionUid, int hours, int minutes, Timestamp startTime, int now) {
+      beginTimer(sessionUid, hours, minutes, startTime, now);
       return Scaffold(
         // backgroundColor: Colors.lightBlue[100],
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(_current.toString()),
               ElevatedButton(
                   onPressed: () {
                     database.endSession(sessionUid);
@@ -168,7 +175,33 @@ class _ActiveSessionPage extends State<ActiveSession>
           ),
         ),
       );
+  }
+
+  void beginTimer(String otherUid, int hours, int minutes, Timestamp startTime, int now) {
+    int durationNeeded = ((hours * 60 + minutes) * 60) - (now - startTime.seconds);
+    print(durationNeeded);
+    if (durationNeeded <= 0) {
+      _current = 0;
+    } else if (!_timerStarted) {
+      _timerStarted = true;
+      _timer = CountdownTimer(
+          Duration(seconds: durationNeeded),
+          Duration(seconds: 1)
+      );
+      _sub = _timer.listen(null);
+      _sub.onData((duration) {
+        setState(() {
+          _current = durationNeeded - duration.elapsed.inSeconds as int;
+        });
+      });
+
+      _sub.onDone(() {
+        _sub.cancel();
+        database.endSession(otherUid);
+      });
     }
+
+  }
 
   @override
   // TODO: implement wantKeepAlive
