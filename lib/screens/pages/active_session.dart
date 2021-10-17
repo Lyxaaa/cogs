@@ -46,6 +46,7 @@ class _ActiveSessionPage extends State<ActiveSession>
           if (!snapshot.hasData) {
             return Load();
           } else {
+            // this contains info about the logged in user
             var userInfo = snapshot.data!.data() as Map<String, dynamic>;
             return StreamBuilder<DocumentSnapshot?>(
                 stream: database.getSessionStream(userInfo['session_uid']),
@@ -53,7 +54,16 @@ class _ActiveSessionPage extends State<ActiveSession>
                   if (!sessionSnapshot.hasData) {
                     return Load();
                   } else {
+                    // this contains info about the current active session
                     var sessionInfo = sessionSnapshot.data!.data() as Map<String, dynamic>;
+                    int breaks = sessionInfo['breaks'];
+                    Timestamp startTime = sessionInfo['start'];
+                    Timestamp endTime = sessionInfo['end'];
+                    String thisUser = database.uid!;
+                    String otherUser = userInfo['session_uid'];
+                    int hours = sessionInfo['hours'];
+                    int minutes = sessionInfo['minutes'];
+                    //TODO Make this look pretty
                     if (!sessionInfo[userInfo['session_uid']]) {
                       return waitingForAccept(userInfo['session_uid']);
                     } else if (!sessionInfo[database.uid]) {
@@ -69,7 +79,6 @@ class _ActiveSessionPage extends State<ActiveSession>
 
   Scaffold askToAccept(String sessionUid) {
     return Scaffold(
-      // backgroundColor: Colors.lightBlue[100],
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +88,6 @@ class _ActiveSessionPage extends State<ActiveSession>
                 onPressed: () {
                   database.acceptSession(sessionUid);
                 },
-                // TODO: Fire off session start from here
                 child: Text("Start".toUpperCase()),
                 style: ButtonStyle(
                     shape:
@@ -123,7 +131,6 @@ class _ActiveSessionPage extends State<ActiveSession>
                   onPressed: () {
                     database.endSession(sessionUid);
                   },
-                  // TODO: Fire off session start from here
                   child: Text("Cancel".toUpperCase()),
                   style: ButtonStyle(
                       shape:
@@ -149,7 +156,6 @@ class _ActiveSessionPage extends State<ActiveSession>
                   onPressed: () {
                     database.endSession(sessionUid);
                   },
-                  // TODO: Fire off session start from here
                   child: Text("Stop".toUpperCase()),
                   style: ButtonStyle(
                       shape:

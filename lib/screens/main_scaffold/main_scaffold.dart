@@ -197,8 +197,8 @@ class _MyHomePageState extends State<MyHomePage>
                           label: 'Sessions',
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.bar_chart,
-                              semanticLabel: "Statistics Page"),
+                          icon: Icon(
+                              Icons.bar_chart, semanticLabel: "Statistics Page"),
                           label: 'Stats',
                         ),
                       ],

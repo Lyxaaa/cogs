@@ -21,10 +21,6 @@ class Stats extends StatefulWidget {
 class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
   DatabaseService database = DatabaseService();
 
-  String title() {
-    return "Your Stats";
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -45,108 +41,11 @@ class _StatsPage extends State<Stats> with AutomaticKeepAliveClientMixin {
                   } else {
                     var sessionInfo = sessionSnapshot.data!.data() as Map<String, dynamic>;
                     bool active = sessionInfo[userInfo['session_uid']];
-                    return Text(sessionInfo['breaks'].toString());
+                    return Text('you have session history'/*sessionInfo['breaks'].toString()*/);
                   }
                 });
           }
         });
-  }
-
-  Scaffold askToAccept(String sessionUid) {
-    return Scaffold(
-      // backgroundColor: Theme.of(context).colorScheme.background,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Would you like to start a session with user?"), //TODO pull users name down here without another DB call
-            ElevatedButton(
-                onPressed: () {
-                  database.acceptSession(sessionUid);
-                },
-                // TODO: Fire off session start from here
-                child: Text("Start".toUpperCase()),
-                style: ButtonStyle(
-                    shape:
-                    MaterialStateProperty.all(CircleBorder()),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.all(40)),
-                    backgroundColor:
-                    MaterialStateProperty.all(Colors.amber)
-                )
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  database.endSession(sessionUid);
-                },
-                // TODO: Fire off session start from here
-                child: Text("Decline".toUpperCase()),
-                style: ButtonStyle(
-                    shape:
-                    MaterialStateProperty.all(CircleBorder()),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.all(40)),
-                    backgroundColor:
-                    MaterialStateProperty.all(Colors.amber)
-                )
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Scaffold waitingForAccept(String sessionUid) {
-    return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Waiting for user to accept session"), //TODO pull users name down here without another DB call
-            ElevatedButton(
-                onPressed: () {
-                  database.endSession(sessionUid);
-                },
-                // TODO: Fire off session start from here
-                child: Text("Cancel".toUpperCase()),
-                style: ButtonStyle(
-                    shape:
-                    MaterialStateProperty.all(CircleBorder()),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.all(40)),
-                    backgroundColor:
-                    MaterialStateProperty.all(Colors.amber))),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Scaffold active(String sessionUid) {
-    return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  database.endSession(sessionUid);
-                },
-                // TODO: Fire off session start from here
-                child: Text("Stop".toUpperCase()),
-                style: ButtonStyle(
-                    shape:
-                    MaterialStateProperty.all(CircleBorder()),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.all(40)),
-                    backgroundColor:
-                    MaterialStateProperty.all(Colors.amber))),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
