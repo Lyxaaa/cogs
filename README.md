@@ -1,19 +1,37 @@
 # team-theta
 repo for Team Theta DECO3500 Project, Semester 2 2021
 
-# distraction_destruction
+## Installation
+### Installing Flutter
+https://flutter.dev/docs/get-started/install
+From this link, make sure to download flutter v2.5.x
 
-DECO3500
+Follow the instructions until... 
+ flutter doctor  
+At this point, consider which IDE you’ll work in: Android Studio, or Visual Studio Code.
 
-## Getting Started
+Android Studio is more established.
+Visual Studio Code is newly supported.
 
-This project is a starting point for a Flutter application.
+### Obtaining the Android SDK
+With Android Studio: https://developer.android.com/studio/intro/update#sdk-manager
 
-A few resources to get you started if this is your first Flutter project:
+If not running Android Studio, you will need to download the Android SDK manually. https://developer.android.com/studio#command-tools
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Move the download to a preferred <location>
+(E.g., a directory for development tools.)
+Create a directory structure like so: <location>\android-sdk\cmdline-tools\
+Enter the directory.
+Unpack the download, renaming the folder from cmdline-tools to latest
+The directory structure should now look like: <location>\android-sdk\cmdline-tools\latest
+Add the environment variables:
+ANDROID_SDK_ROOT  <location>\android-sdk
+ANDROID_HOME <location>\android-sdk
+In a terminal, cd into latest/bin folder.
+Run the following command.
+sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Return to the original instructions, continuing at flutter doctor
+
+## Tutorials
+https://flutter.dev/docs/get-started/codelab
