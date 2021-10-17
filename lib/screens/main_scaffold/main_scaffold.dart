@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/auth.dart';
 import 'package:distraction_destruction/screens/builders/friend_list.dart';
 import 'package:distraction_destruction/screens/builders/overlay_popup.dart';
+import 'package:distraction_destruction/screens/global/load.dart';
+import 'package:distraction_destruction/screens/pages/active_session.dart';
 import 'package:distraction_destruction/screens/pages/friends.dart';
 import 'package:distraction_destruction/screens/pages/sessions.dart';
 import 'package:distraction_destruction/screens/pages/stats.dart';
@@ -54,6 +56,16 @@ class _MyHomePageState extends State<MyHomePage>
     Stats(),
   ];
 
+  // bool _sessionActive = false;
+  // void setSessionState(bool state) {
+  //   if (_sessionActive != state) {
+  //     _sessionActive = state;
+  //     setState(() {
+  //       _sessionActive ? _pages[0] = ActiveSession() : _pages[0] = Friends();
+  //     });
+  //   }
+  // }
+
   PageController _controller = PageController(
     initialPage: 0,
   );
@@ -81,111 +93,123 @@ class _MyHomePageState extends State<MyHomePage>
     // rerunning build methods is extremely fast
     // just rebuild anything that needs updating rather than
     // individually changing instances of widgets.
-    return StreamProvider<DocumentSnapshot?>.value(
+    return StreamBuilder<DocumentSnapshot?>(
       //TODO set loading screen here to prevent error screen from momentarily showing
-      value: database.userDetailsStream,
+      stream: database.userDetailsStream,
       initialData: null,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).canvasColor,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          //Since this was called by _MyHomePageState, which was created
-          // in MyHomePage, we can access all of the states variables through
-          // widget.#{}
-          // backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          //Logout, Profile or Settings button
-          //TODO Implement functionality, this should either logout or take the user somewhere
-          actions: <Widget>[
-            IconButton(
-              onPressed: () async {
-                await _auth.signOut();
-              },
-              icon: Icon(Icons.account_circle),
-              // color: Colors.black87,
-            ),
-            /*IconButton(
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Load();
+        } else {
+          var userInfo = snapshot.data!.data() as Map<String, dynamic>;
+          //setSessionState(userInfo['session_active']);
+          return Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
+              appBar: AppBar(
+                //Since this was called by _MyHomePageState, which was created
+                // in MyHomePage, we can access all of the states variables through
+                // widget.#{}
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                elevation: 0.0,
+                //Logout, Profile or Settings button
+                //TODO Implement functionality, this should either logout or take the user somewhere
+                actions: <Widget>[
+                  IconButton(
+                    onPressed: () async {
+                      await _auth.signOut();
+                    },
+                    icon: Icon(Icons.account_circle),
+                    // color: Colors.black87,
+                  ),
+                  /*IconButton(
               onPressed: () async {
                 await _auth.signOut();
               },
               icon: Icon(Icons.person_search),
               color: Colors.black87,
             ),*/
-            Expanded(
-              child: Center(
-                child: Text(/*DatabaseService().userInfo.get().toString() + */
-                (!_controller.hasClients
-                    ? _pages[0]
-                    : _pages[(_controller.page ?? _controller.initialPage)
-                    .round()])
-                    .toString(),
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Center(
+                      child: Text(/*DatabaseService().userInfo.get().toString() + */
+                        (!_controller.hasClients
+                            ? _pages[0]
+                            : _pages[(_controller.page ?? _controller
+                            .initialPage)
+                            .round()])
+                            .toString(),
+                        style: const TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) =>
+                              OverlayPopup(
+                                contents: Friends(add: true,),));
+                    },
+                    icon: Icon(Icons.person_add),
+                    // color: Colors.black87,
+                  ),
+                ],
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (_) =>
-                        const OverlayPopup(
-                            contents: Friends(add: true,),));
-              },
-              icon: Icon(Icons.person_add),
-              // color: Colors.black87,
-            ),
-          ],
-        ),
-        body: Center(
-            child: PageView(
-          controller: _controller,
-          children: _pages,
-          onPageChanged: _onItemTapped,
-        )
-            // child: _pages.elementAt(_selectedIndex),
-            ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.only( topRight: Radius.circular(30), topLeft: Radius.circular(30))
-          ),
-        child: Material(
-          color: Theme.of(context).colorScheme.primary,
-          elevation: 0.0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0)),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            iconSize: 24,
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            fixedColor: Theme.of(context).colorScheme.onBackground,
-            // selectedIconTheme: Theme.of(context).iconTheme.copyWith(color: Theme.of(context).colorScheme.secondary),
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.people, semanticLabel: "Friends Page"),
-                label: 'Friends',
+              body: Center(
+                  child: PageView(
+                    controller: _controller,
+                    children: _pages,
+                    onPageChanged: _onItemTapped,
+                  )
+                // child: _pages.elementAt(_selectedIndex),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.alarm_on, semanticLabel: "Start Session"),
-                label: 'Sessions',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.bar_chart, semanticLabel: "Statistics Page"),
-                label: 'Stats',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-          ),
-        // This trailing comma makes auto-formatting nicer for build methods.
-        ))
-      ),
+              bottomNavigationBar: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30))
+                  ),
+                  child: Material(
+                    color: Theme.of(context).colorScheme.primary,
+                    elevation: 0.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: BottomNavigationBar(
+                      type: BottomNavigationBarType.fixed,
+                      showSelectedLabels: false,
+                      showUnselectedLabels: false,
+                      iconSize: 24,
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      fixedColor: Theme.of(context).colorScheme.onBackground,
+                      items: const <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                              Icons.people, semanticLabel: "Friends Page"),
+                          label: 'Friends',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                              Icons.alarm_on, semanticLabel: "Start Session"),
+                          label: 'Sessions',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.bar_chart,
+                              semanticLabel: "Statistics Page"),
+                          label: 'Stats',
+                        ),
+                      ],
+                      currentIndex: _selectedIndex,
+                      onTap: _onItemTapped,
+                    ),
+                    // This trailing comma makes auto-formatting nicer for build methods.
+                  ))
+          );
+        }
+      }
     );
   }
 

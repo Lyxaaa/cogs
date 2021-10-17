@@ -29,8 +29,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Distraction Part 2: Destruction Boogaloo',
-        theme: darkTheme,
-        // theme: lightTheme,
+        // theme: darkTheme,
+        themeMode: ThemeMode.system,
+        theme: lightTheme,
+        darkTheme: darkTheme,
         // theme: ThemeData(
         //   scaffoldBackgroundColor: MaterialColor.,
         //   canvasColor: AppTheme.notWhite,

@@ -17,6 +17,9 @@ class DatabaseService {
     return _databaseService;
   }
 
+  int uidHash(String s1, String s2) =>
+      (<String>[s1, s2]..sort()).join().hashCode;
+
   //Do not use this method, it should only ever be touched upon signout
   void unlockDatabase() {
     _lock = false;
@@ -26,11 +29,13 @@ class DatabaseService {
   
   // Get reference to a collection in the database
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('user');
-  final CollectionReference timelineCollection = FirebaseFirestore.instance.collection('timeline');
+  final CollectionReference sessionCollection = FirebaseFirestore.instance.collection('session');
 
   Future createUser(String uid, String name) async {
     await userCollection.doc(uid).set({
       'name': name,
+      'session_active': false,
+      'session_uid': ''
     });
   }
 
@@ -50,14 +55,13 @@ class DatabaseService {
     return userCollection.doc(uid).collection('friends').snapshots();
   }
 
-  Future<DocumentSnapshot> getUserDocStream(String uid) {
+  Future<DocumentSnapshot> getUserDocFuture(String uid) {
     return userCollection.doc(uid).get();
   }
 
-  DocumentReference get updateUserDetails {
-    return userCollection.doc(uid);
+  Stream<DocumentSnapshot> getUserDocStream(String uid) {
+    return userCollection.doc(uid).snapshots();
   }
-
 
 
   Future<DocumentSnapshot<Object?>> get userDataFuture {
@@ -68,20 +72,87 @@ class DatabaseService {
     return userCollection.doc(uid).get();
   }
 
+  Stream<DocumentSnapshot> getSessionStream(String uid) {
+    return sessionCollection.doc(uidHash(this.uid!, uid).toString()).snapshots();
+  }
+
   void addFriend(String uid) {
     userCollection.doc(this.uid).collection('friends').doc(uid).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
       'score': 0,
-      'last_session': Timestamp.now()
+      'last_session': Timestamp.now(),
+    });
+    userCollection.doc(uid).collection('friends').doc(this.uid).set({
+      'score': 0,
+      'last_session': Timestamp.now(),
     });
   }
 
-  Stream<DocumentSnapshot> getUserDetails(String uid) {
-    return userCollection.doc(uid).snapshots();
+  void modifySessionHistory(String uid, Timestamp startTime, Timestamp endTime, int hours, int minutes, int breaks) {
+    sessionCollection.doc(uidHash(this.uid!, uid).toString())
+        .collection('history')
+        .doc(startTime.toString())
+        .update({
+
+    });
   }
 
-  // List<AppUser> _friendListFromSnapshot(QuerySnapshot snapshot) {
-  //   return
-  // }
+
+  void startSession(String uid, Timestamp endTime, int hours, int minutes, int breaks) {
+    //var otherUser = (await userCollection.doc(uid).snapshots().first).data() as Map<String?, dynamic>;
+    //bool? active = otherUser['session_active'];
+    //print("Active: " + active.toString() + ' : ' + uid);
+    //if (active != null && !active) {
+    Timestamp now = Timestamp.now();
+    setSessionState(this.uid!, true, uid);
+    setSessionState(uid, true, this.uid!);
+    startSessionGlobal(uid, endTime, hours, minutes, breaks);
+    //}
+    //return false;
+    //TODO need to make sure the other user isn't already in a session
+    //If user's session_active is false, display reg page
+    //If user's session_active is true:
+    //    if sessions other uid is true: display time remaining & stop button
+    //    if sessions other uid is false: display "waiting for friend to accept session"
+  }
+
+  void endSession(String uid) {
+    setSessionState(this.uid!, false, uid);
+    setSessionState(uid, false, this.uid!);
+    endSessionGlobal(uid, true);
+  }
+
+  void acceptSession(String uid) {
+    sessionCollection.doc(uidHash(this.uid!, uid).toString()).update({
+      this.uid!: true,
+    });
+  }
+
+  void startSessionGlobal(String uid, Timestamp endTime, int hours, int minutes, int breaks) async {
+    print("start session: " + uid);
+    await sessionCollection.doc(uidHash(this.uid!, uid).toString()).set({
+      //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
+      this.uid.toString(): true,
+      uid.toString(): false,
+      'start': Timestamp.now(),
+      'end' : endTime,
+      'hours': hours,
+      'minutes': minutes,
+      'breaks': breaks,
+    });
+  }
+
+  void endSessionGlobal(String uid, bool endEarly) {
+    sessionCollection.doc(uidHash(this.uid!, uid).toString()).update({
+      'end': Timestamp.now()
+    });
+  }
+
+  Future setSessionState(String modifyUid, bool state, String otherUid) async {
+    await userCollection.doc(modifyUid).update({
+      'session_active': state,
+      'session_uid': otherUid,
+    });
+  }
 
 }

@@ -13,7 +13,7 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dev.log("Init Wrapper", name: 'screens.wrapper');
+    dev.log('wrapper', name: 'screens.wrapper');
 
     //Forces anything that relies on the status of User to be triggered upon change
     final user = Provider.of<AppUser?>(context);
