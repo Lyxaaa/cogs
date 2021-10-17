@@ -17,13 +17,8 @@ class Sessions extends StatefulWidget {
 
 class _SessionPage extends State<Sessions> with AutomaticKeepAliveClientMixin {
   int _counter = 0;
-  bool _session = false;
-
-  void inSession(bool inSession) {
-    _session = inSession;
-  }
   String title() {
-    return _session ? "Session in Progress" : "Welcome Back ";
+    return "Welcome Back ";
   }
 
   void _incrementCounter() {

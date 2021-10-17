@@ -34,8 +34,6 @@ class _FriendItemState extends State<FriendItem> {
     if (!widget.show) {
       return const SizedBox();
     } else {
-      final friends = Provider.of<QuerySnapshot?>(context);
-      dev.log(widget.uid, name: "User ID before Future");
       if (widget.score == -1) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),

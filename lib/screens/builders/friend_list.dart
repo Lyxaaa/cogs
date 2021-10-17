@@ -51,7 +51,7 @@ class _FriendListState extends State<FriendList> {
                       );
                     } else {
                       return FutureBuilder<DocumentSnapshot?>(
-                          future: DatabaseService().getUserDocStream(uid),
+                          future: DatabaseService().getUserDocFuture(uid),
                           initialData: null,
                           builder: (context, userInfoSnapshot) {
                             if (userInfoSnapshot.hasError) {

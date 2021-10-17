@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:distraction_destruction/screens/builders/friend_list.dart';
 import 'package:distraction_destruction/screens/builders/overlay_popup.dart';
+import 'package:distraction_destruction/screens/global/load.dart';
+import 'package:distraction_destruction/screens/pages/active_session.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +83,15 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
     );
   }
 
+  // bool _sessionActive = false;
+  // void setSessionState(bool state) {
+  //   if (_sessionActive != state) {
+  //     setState(() {
+  //       _sessionActive = state;
+  //     });
+  //   }
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,47 +102,53 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
     //Puts the cursor at the end of the search box after the setState build reset
     _textFieldController.selection = TextSelection.fromPosition(TextPosition(
         offset: _textFieldController.text.length));
-    return FutureBuilder<DocumentSnapshot?>(
-      future: database.userDataFuture, //TODO Change to friend list database collection
+    return StreamBuilder<DocumentSnapshot?>(
+      //TODO set loading screen here to prevent error screen from momentarily showing
+      stream: database.userDetailsStream,
       initialData: null,
       builder: (context, snapshot) {
-        if(snapshot.hasError) {
-          return Text("Something went wrong");
-        } else if (snapshot.hasData || snapshot.data != null) {
+        if (!snapshot.hasData) {
+          return Load();
+        } else {
           var info = snapshot.data!.data() as Map<String, dynamic>;
           name = info['name'];
-          return Scaffold(
-            backgroundColor: widget.add ? Colors.transparent : Colors.lightBlue[100],
-            body: Container(
-              padding: EdgeInsets.fromLTRB(30, 5, 30, 30),
-              // Center is a layout widget. It takes a single child and positions it
-              // in the middle of the parent.
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  filterFriends(widget.add ? 'Add Friend' : 'Filter Friends'),
-                  SizedBox(height: 20.0,),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white),
-                      child: FriendList(add: widget.add, searchQuery: _textFieldController.text,),
+          //setSessionState(info['session_active']);
+          if (info['session_active']) {
+            return ActiveSession();
+          } else {
+            return Scaffold(
+              backgroundColor: widget.add ? Colors.transparent : Colors
+                  .lightBlue[100],
+              body: Container(
+                padding: EdgeInsets.fromLTRB(30, 5, 30, 30),
+                // Center is a layout widget. It takes a single child and positions it
+                // in the middle of the parent.
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    filterFriends(widget.add ? 'Add Friend' : 'Filter Friends'),
+                    SizedBox(height: 20.0,),
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white),
+                        child: FriendList(add: widget.add,
+                          searchQuery: _textFieldController.text,),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            /*floatingActionButton: FloatingActionButton(
+              /*floatingActionButton: FloatingActionButton(
               onPressed: () {showDialog(context: context, builder: (_) => OverlayPopup(contents: FriendList(showAll: true)));},
               tooltip: 'Add Friend',
               child: const Icon(Icons.person_add),
             ),*/
-          );
-        } else {
-          return Text("Something else went wrong");
+            );
+          }
         }
       },
     );
