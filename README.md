@@ -35,3 +35,5 @@ Return to the original instructions, continuing at flutter doctor
 
 ## Tutorials
 https://flutter.dev/docs/get-started/codelab
+ 
+ [Home](../../wiki)
