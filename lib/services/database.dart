@@ -98,7 +98,7 @@ class DatabaseService {
   }
 
 
-  void startSession(String uid, Timestamp endTime, int hours, int minutes, int breaks) {
+  void startSession(String uid, String name, Timestamp endTime, int hours, int minutes, int breaks) {
     //var otherUser = (await userCollection.doc(uid).snapshots().first).data() as Map<String?, dynamic>;
     //bool? active = otherUser['session_active'];
     //print("Active: " + active.toString() + ' : ' + uid);
@@ -106,7 +106,7 @@ class DatabaseService {
     Timestamp now = Timestamp.now();
     setSessionState(this.uid!, true, uid);
     setSessionState(uid, true, this.uid!);
-    startSessionGlobal(uid, endTime, hours, minutes, breaks);
+    startSessionGlobal(uid, name, endTime, hours, minutes, breaks);
     //}
     //return false;
     //TODO need to make sure the other user isn't already in a session
@@ -125,10 +125,11 @@ class DatabaseService {
   void acceptSession(String uid) {
     sessionCollection.doc(uidHash(this.uid!, uid).toString()).update({
       this.uid!: true,
+      'start': Timestamp.now(),
     });
   }
 
-  void startSessionGlobal(String uid, Timestamp endTime, int hours, int minutes, int breaks) async {
+  void startSessionGlobal(String uid, String name, Timestamp endTime, int hours, int minutes, int breaks) async {
     await sessionCollection.doc(uidHash(this.uid!, uid).toString()).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
       this.uid.toString(): true,
@@ -138,6 +139,7 @@ class DatabaseService {
       'hours': hours,
       'minutes': minutes,
       'breaks': breaks,
+      'name': name,
     });
   }
 

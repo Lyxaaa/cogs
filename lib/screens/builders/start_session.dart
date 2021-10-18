@@ -151,6 +151,7 @@ class _StartSessionState extends State<StartSession> {
               print('starting session');
               database.startSession(
                   widget.uid,
+                  widget.name,
                   Timestamp.now(),
                   selectedTime.hour,
                   selectedTime.minute,
