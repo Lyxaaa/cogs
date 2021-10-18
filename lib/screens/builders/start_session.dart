@@ -145,7 +145,7 @@ class _StartSessionState extends State<StartSession> {
           child: SizedBox(),
           flex: 1,
         ),
-        FloatingActionButton(
+        ElevatedButton(
           onPressed: () {
             if (!_userInSession) {
               print('starting session');

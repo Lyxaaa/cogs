@@ -132,7 +132,6 @@ class _SignUpState extends State<SignUp> {
                 },
                 child: const Text(
                   "Register",
-                  style: TextStyle(color: Colors.white),
                 ),
                 //style: ButtonStyle(),
               ),
