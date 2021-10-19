@@ -37,6 +37,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    print("BUILDING HOME");
     super.build(context);
     return StreamBuilder<DocumentSnapshot?>(
       stream: database.userDetailsStream,
@@ -45,6 +46,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
         if (!snapshot.hasData) {
           return const Load();
         } else {
+          print("session a: " + snapshot.data!.data().toString());
           var userInfo = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
             body: Container(
@@ -73,8 +75,32 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
       stream: database.getSessionStream(sessionUid),
       initialData: null,
       builder: (context, snapshot) {
+        print("session: " + snapshot.data!.data().toString());
         if (!snapshot.hasData) {
           return const Load();
+        } else if (snapshot.data == null){
+          return Container(
+            margin: EdgeInsets.all(20.0),
+            color: Theme.of(context).cardColor,
+            padding: EdgeInsets.all(20.0),
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                Text('You have no session history',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
+                ),
+                Text('Head over to the friends screen to get started!',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ],
+            ),
+          );
         } else {
           var sessionInfo = snapshot.data!.data() as Map<String, dynamic>;
           int breaks = sessionInfo['breaks'];
