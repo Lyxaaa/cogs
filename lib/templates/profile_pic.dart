@@ -1,24 +1,30 @@
 import 'package:distraction_destruction/services/database.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePic extends StatelessWidget {
+class ProfilePic extends StatefulWidget {
   final VoidCallback onTap;
 
   const ProfilePic({required this.onTap});
 
   @override
+  _ProfilePicState createState() => _ProfilePicState();
+}
+
+class _ProfilePicState extends State<ProfilePic> {
+  @override
   Widget build(BuildContext context) {
+    DatabaseService database = DatabaseService();
     return GestureDetector(
-        onTap: onTap,
-        child: DatabaseService().currentProfilePicUrl == null
+        onTap: widget.onTap,
+        child: database.currentProfilePicUrl == null
             ? const CircleAvatar(
           radius: 50.0,
           child: Icon(Icons.photo_camera),
         )
-        : CircleAvatar(
-      radius: 50.0,
-      backgroundImage: NetworkImage(DatabaseService().currentProfilePicUrl!),
-    )
+            : CircleAvatar(
+          radius: 50.0,
+          backgroundImage: NetworkImage(database.currentProfilePicUrl!),
+        )
     );
   }
 }
