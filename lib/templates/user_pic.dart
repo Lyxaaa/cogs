@@ -8,12 +8,12 @@ class UserPic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return url == 'null'
-        ? const CircleAvatar(
+        ? CircleAvatar(
       radius: 20.0,
       child: Icon(
         Icons.person,
         size: 40.0,
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
       backgroundColor: Colors.transparent,
     )
