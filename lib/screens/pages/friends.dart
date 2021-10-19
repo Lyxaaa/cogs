@@ -108,6 +108,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Row(
