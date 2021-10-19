@@ -72,7 +72,7 @@ class _ActiveSessionPage extends State<ActiveSession>
                     int breaks = sessionInfo['breaks'];
                     Timestamp startTime = sessionInfo['start'];
                     Timestamp endTime = sessionInfo['end'];
-                    String thisUser = database.uid!;
+                    String thisUser = database.uid;
                     String otherUser = userInfo['session_uid'];
                     String otherName = sessionInfo['name'];
                     int hours = sessionInfo['hours'];

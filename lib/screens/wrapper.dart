@@ -22,7 +22,7 @@ class Wrapper extends StatelessWidget {
     }
 
     dev.log("Obtained user: " + user.toString());
-    return user == null ? Auth() : Home();
+    return user == null ? Auth() : MainScaffold();
     //Return Home/Auth widget
     //return Auth();
   }

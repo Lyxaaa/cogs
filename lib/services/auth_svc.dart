@@ -39,6 +39,7 @@ class AuthService {
         DatabaseService database = DatabaseService(uid: user.uid);
         Object? userData = (await database.userCollection.doc(user.uid).get()).data();
         dev.log(userData.toString(), name: "User Data Object");
+        database.updateProfilePicUrl();
       }
       return _localUser(user);
     } catch (e) {

@@ -41,9 +41,11 @@ class _FriendListState extends State<FriendList> {
                       show = false;
                       if (widget.searchQuery.length > 2
                           && friendInfo['name'].toString().toLowerCase()
-                              .contains(widget.searchQuery)) {
+                              .contains(widget.searchQuery) && uid != database.uid) {
                         show = true;
                       }
+                      dev.log(uid + ' : ' + show.toString(), name: "add friends");
+
                       return FriendItem(
                         uid: uid,
                         name: friendInfo['name'],
@@ -57,15 +59,15 @@ class _FriendListState extends State<FriendList> {
                             if (userInfoSnapshot.hasError) {
                               return Load();
                             } else if (userInfoSnapshot.hasData || userInfoSnapshot.data != null) {
-                              dev.log(userInfoSnapshot.data!.data().toString(), name: "friend_item.dart");
                               var userInfo = userInfoSnapshot.data!.data() as Map<String,
                                   dynamic>; //TODO Find out how to reference a doc cell
                               show = true;
-                              if (widget.searchQuery.length > 2
+                              if (widget.searchQuery.length >= 2
                                   && !userInfo['name'].toString().toLowerCase()
                                       .contains(widget.searchQuery)) {
                                 show = false;
                               }
+                              dev.log(userInfoSnapshot.data!.data().toString() + ' : ' + show.toString(), name: "fliter friends");
                               return FriendItem(
                                 uid: uid,
                                 lastSession: friendInfo['last_session'],

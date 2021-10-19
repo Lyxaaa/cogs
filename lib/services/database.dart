@@ -1,21 +1,39 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_time_patterns.dart';
 
 class DatabaseService {
-  String? uid;
+  final FirebaseStorage storage = FirebaseStorage.instanceFor(bucket: 'gs://distraction-destruction.appspot.com');
+
+  String? _uid;
+  String? _name;
+  String? _profilePicUrl;
+
   bool _lock = false;
+  bool _lockName = false;
+
   static final DatabaseService _databaseService = DatabaseService._internal();
   DatabaseService._internal();
 
   factory DatabaseService({String? uid}) {
     if (!_databaseService._lock) {
-      _databaseService.uid = uid;
+      _databaseService._uid = uid;
       _databaseService._lock = true;
     }
+
     return _databaseService;
   }
+
+  String get uid => _uid!;
+  String get name => _name!;
+  String? get profilePicUrl => _profilePicUrl;
 
   int uidHash(String s1, String s2) =>
       (<String>[s1, s2]..sort()).join().hashCode;
@@ -23,8 +41,45 @@ class DatabaseService {
   //Do not use this method, it should only ever be touched upon signout
   void unlockDatabase() {
     _lock = false;
+    _lockName = false;
   }
 
+  void setName(String name) {
+    if (!_databaseService._lockName) {
+      _databaseService._name = name;
+      _databaseService._lockName = true;
+    }
+  }
+
+  void setPic(String url) {
+      _databaseService._profilePicUrl = url;
+  }
+
+  String? get currentProfilePicUrl {
+    return _profilePicUrl;
+  }
+
+  Future<void> updateProfilePicUrl() async {
+    var storageReference = storage.ref().child('user/pics/${uid}');
+    var downloadTask = storageReference.getDownloadURL();
+    _profilePicUrl = await downloadTask;
+  }
+
+  Future<String> findProfilePicUrl(String uid) async {
+    var storageReference = storage.ref().child('user/pics/${uid}');
+    var downloadTask = storageReference.getDownloadURL();
+    return await downloadTask;
+  }
+
+  Future<void> uploadProfilePic(PickedFile file) async {
+    var storageReference = storage.ref().child('user/pics/${uid}');
+    var uploadTask = storageReference.putData(await file.readAsBytes(), SettableMetadata(contentType: 'image/jpeg'));
+    uploadTask.whenComplete(() async {
+      _profilePicUrl = await storageReference.getDownloadURL();
+    }).catchError((onError) {
+      print(onError);
+    });
+  }
   //DatabaseService({this.uid});
   
   // Get reference to a collection in the database
@@ -73,7 +128,7 @@ class DatabaseService {
   }
 
   Stream<DocumentSnapshot> getSessionStream(String uid) {
-    return sessionCollection.doc(uidHash(this.uid!, uid).toString()).snapshots();
+    return sessionCollection.doc(uidHash(this.uid, uid).toString()).snapshots();
   }
 
   void addFriend(String uid) {
@@ -89,7 +144,7 @@ class DatabaseService {
   }
 
   void modifySessionHistory(String uid, Timestamp startTime, Timestamp endTime, int hours, int minutes, int breaks) {
-    sessionCollection.doc(uidHash(this.uid!, uid).toString())
+    sessionCollection.doc(uidHash(this.uid, uid).toString())
         .collection('history')
         .doc(startTime.toString())
         .update({
@@ -104,8 +159,8 @@ class DatabaseService {
     //print("Active: " + active.toString() + ' : ' + uid);
     //if (active != null && !active) {
     Timestamp now = Timestamp.now();
-    setSessionState(this.uid!, true, uid);
-    setSessionState(uid, true, this.uid!);
+    setSessionState(this.uid, true, uid);
+    setSessionState(uid, true, this.uid);
     startSessionGlobal(uid, name, endTime, hours, minutes, breaks);
     //}
     //return false;
@@ -117,20 +172,20 @@ class DatabaseService {
   }
 
   void endSession(String uid) {
-    setSessionState(this.uid!, false, uid);
-    setSessionState(uid, false, this.uid!);
+    setSessionState(this.uid, false, uid);
+    setSessionState(uid, false, this.uid);
     endSessionGlobal(uid, true);
   }
 
   void acceptSession(String uid) {
-    sessionCollection.doc(uidHash(this.uid!, uid).toString()).update({
-      this.uid!: true,
+    sessionCollection.doc(uidHash(this.uid, uid).toString()).update({
+      this.uid: true,
       'start': Timestamp.now(),
     });
   }
 
   void startSessionGlobal(String uid, String name, Timestamp endTime, int hours, int minutes, int breaks) async {
-    await sessionCollection.doc(uidHash(this.uid!, uid).toString()).set({
+    await sessionCollection.doc(uidHash(this.uid, uid).toString()).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
       this.uid.toString(): true,
       uid.toString(): false,
@@ -144,7 +199,7 @@ class DatabaseService {
   }
 
   void endSessionGlobal(String uid, bool endEarly) {
-    sessionCollection.doc(uidHash(this.uid!, uid).toString()).update({
+    sessionCollection.doc(uidHash(this.uid, uid).toString()).update({
       'end': Timestamp.now()
     });
   }

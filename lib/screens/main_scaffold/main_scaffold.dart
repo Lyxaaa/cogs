@@ -5,7 +5,8 @@ import 'package:distraction_destruction/screens/builders/overlay_popup.dart';
 import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/screens/pages/active_session.dart';
 import 'package:distraction_destruction/screens/pages/friends.dart';
-import 'package:distraction_destruction/screens/pages/sessions.dart';
+import 'package:distraction_destruction/screens/pages/home.dart';
+import 'package:distraction_destruction/screens/pages/profile.dart';
 import 'package:distraction_destruction/screens/pages/stats.dart';
 import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +15,20 @@ import 'package:distraction_destruction/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as dev;
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class MainScaffold extends StatelessWidget {
+  const MainScaffold({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     dev.log("Create Home", name: "screens.main_scaffold.main_scaffold");
     return Container(
-      child: MyHomePage(title: "Distraction Destruction"),
+      child: MainScaffoldPage(title: "Distraction Destruction"),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MainScaffoldPage extends StatefulWidget {
+  const MainScaffoldPage({Key? key, required this.title}) : super(key: key);
 
   // config for the state
   // holds the values (title below) provided by parent (App widget above)
@@ -37,10 +38,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainScaffoldPage> createState() => _MainScaffoldPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _MainScaffoldPageState extends State<MainScaffoldPage>
     with AutomaticKeepAliveClientMixin {
   final AuthService _auth = AuthService();
   final DatabaseService database = DatabaseService();
@@ -50,9 +51,8 @@ class _MyHomePageState extends State<MyHomePage>
   //Everything in the BottomNavigationBar should go here
   //If we have 3 items in the navbar, this list should have 3 widget elements
   static final List<Widget> _pages = <Widget>[
-    //TODO Change the pages that are linked here
     Friends(),
-    Sessions(),
+    Home(),
     Stats(),
   ];
 
@@ -103,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage>
         } else {
           var userInfo = snapshot.data!.data() as Map<String, dynamic>;
           //setSessionState(userInfo['session_active']);
+          database.setName(userInfo['name']);
           return Scaffold(
               backgroundColor: Theme.of(context).canvasColor,
               appBar: AppBar(
@@ -115,9 +116,15 @@ class _MyHomePageState extends State<MyHomePage>
                 //TODO Implement functionality, this should either logout or take the user somewhere
                 actions: <Widget>[
                   IconButton(
-                    onPressed: () async {
-                      await _auth.signOut();
-                    },
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) =>
+                              OverlayPopup(
+                                contents: Profile()
+                              )
+                      );
+                      },
                     icon: Icon(Icons.account_circle),
                     // color: Colors.black87,
                   ),
