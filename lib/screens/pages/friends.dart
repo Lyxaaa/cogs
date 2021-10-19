@@ -114,27 +114,43 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-
+                      //// QRCODE Scanner
                       Visibility(visible:widget.add,
                           child: IconButton(
+                              // TODO: Break this function out.
                               onPressed: () async {
+
                                 String code = await friendScan();
-                                // DocumentSnapshot friendDoc = await DatabaseService().getSpecificUserDataFuture(code);
-                                // DatabaseService().getSpecificUserDataFuture(code)
-                                // DatabaseService().addFriend(code);
-                                String msg;
-                                // if (friendDoc.exists) {
-                                //   msg = friendDoc.
-                                // }
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => SimpleDialog(
-                                      title: Text(code),
-                                      // children:[FriendCode()],
-                                    ));
+                                AppUser? user = await DatabaseService().getAppUser(code);
+                                bool added = await DatabaseService().safelyAddFriend(code);
+
+                                final snackBar;
+                                if (added) {
+                                  snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text("Now friends with ${user!.name ?? 'an unknown individual'}."),
+                                    action: SnackBarAction(
+                                      label: 'Undo',
+                                      onPressed: () {}, // TODO: Implement friendship with <x> ended.
+                                    ),
+                                  );
+                                } else {
+                                  snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text("Not a valid user."),
+                                    action: SnackBarAction(
+                                      label: 'Try Again', // TODO: Implement restart this scan.
+                                      onPressed: () {},
+                                    ),
+                                  );
+                                }
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBar);
                               },
                               icon: Icon(Icons.camera)
                           )),
+                      ///// QR Generator
                       Visibility(visible:widget.add,
                           child: IconButton(
                               onPressed: () {

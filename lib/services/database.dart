@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:developer' as dev;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:distraction_destruction/screens/builders/friend_item.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -209,6 +211,51 @@ class DatabaseService {
       'session_active': state,
       'session_uid': otherUid,
     });
+  }
+
+  Future<bool> safelyAddFriend(String uid) async {
+
+    // same user
+    if (uid == DatabaseService().uid) {
+      dev.log("Spidermen meme.");
+      return false;
+    }
+
+    DocumentSnapshot friend = await getUserSnapshot(uid);
+    if (!friend.exists) { // no such user
+      dev.log("This friend isn't real. (User doesn't exist.)");
+      return false;
+    }
+
+    DocumentSnapshot user = await DatabaseService().userDataFuture;
+
+    // Check friend already in friends list
+    var friendRecord = await userCollection.doc(DatabaseService().uid).collection("friends").doc(uid).get();
+    if (friendRecord.exists) {
+      dev.log("You're already friends!");
+      return false;
+    }
+
+    dev.log("This friend completely new ... and they're real!");
+    addFriend(uid);
+    return true; // TODO: restructure -- return false as default exist condition
+  }
+
+  Future<DocumentSnapshot> getUserSnapshot(String uid) async {
+    DocumentSnapshot userSnapshot = await DatabaseService().getUserDocFuture(uid);
+    return userSnapshot;
+  }
+
+  Future<AppUser?> getAppUser(String uid) async {
+    DocumentSnapshot friendInfo = await DatabaseService().getUserDocFuture(uid);
+
+    var userInfo = friendInfo.data() as Map<String,
+        dynamic>; //TODO Find out how to reference a doc cell
+
+    return AppUser(
+      uid: uid,
+      name: userInfo['name'],
+    );
   }
 
 }

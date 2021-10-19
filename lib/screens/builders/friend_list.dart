@@ -67,7 +67,7 @@ class _FriendListState extends State<FriendList> {
                                       .contains(widget.searchQuery)) {
                                 show = false;
                               }
-                              dev.log(userInfoSnapshot.data!.data().toString() + ' : ' + show.toString(), name: "fliter friends");
+                              dev.log(userInfoSnapshot.data!.data().toString() + ' : ' + show.toString(), name: "filter friends");
                               return FriendItem(
                                 uid: uid,
                                 lastSession: friendInfo['last_session'],
