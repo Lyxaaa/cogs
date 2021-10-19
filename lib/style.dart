@@ -11,7 +11,7 @@ final ThemeData lightTheme = ThemeData(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30)),
-          primary: Colors.grey, // background color
+          primary: Colors.grey,
           textStyle: const TextStyle(fontSize: 17, color: Colors.black),
           elevation: 30.0,
           shadowColor: Colors.black
@@ -28,7 +28,7 @@ final ThemeData darkTheme = ThemeData(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30)),
-          primary: Colors.grey, // background color
+          //primary: Colors.grey,
           textStyle: const TextStyle(fontSize: 17, color: Colors.black),
           elevation: 30.0,
           shadowColor: Colors.black
