@@ -59,7 +59,8 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                       fontSize: 20.0,
                     ),
                   ),
-                  Container(
+                  Expanded(
+                    child: Container(
                     margin: EdgeInsets.all(20.0),
                     color: Theme
                         .of(context)
@@ -68,6 +69,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.topCenter,
                     child: lastSessionInfo(
                         userInfo['session_uid'], userInfo['session_active']),
+                    ),
                   ),
                 ],
               ),
