@@ -87,6 +87,7 @@ class _MainScaffoldPageState extends State<MainScaffoldPage>
 
   @override
   Widget build(BuildContext context) {
+    database.updateProfilePicUrl();
     super.build(context);
     //DatabaseService().userPreferences.map((querySnapshot) => querySnapshot.docs.map((doc) => Task))
     // rerunning build methods is extremely fast

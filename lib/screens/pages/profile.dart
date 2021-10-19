@@ -20,8 +20,10 @@ class _ProfileState extends State<Profile> {
     return Container(
       padding: EdgeInsets.all(20.0),
       child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ProfilePic(
                     onTap: () async {
@@ -32,11 +34,11 @@ class _ProfileState extends State<Profile> {
                       }
                     }
                     ),
-                Expanded(
-                    child: SizedBox(),
+                const SizedBox(
+                  width: 30,
                 ),
                 Text(database.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -54,7 +56,15 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
-            Text("Sessions")
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+                "Sessions:",
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            )
           ]
       ),
     );

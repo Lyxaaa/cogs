@@ -196,7 +196,8 @@ class DatabaseService {
       'hours': hours,
       'minutes': minutes,
       'breaks': breaks,
-      'name': name,
+      uid+'name': name,
+      this.uid+'name': this.name
     });
   }
 
