@@ -9,7 +9,9 @@ import 'dart:developer' as dev;
 // },
 class OverlayPopup extends StatefulWidget {
   final Widget contents;
-  const OverlayPopup({Key? key, required this.contents}) : super(key: key);
+  final double? heightFactor;
+  final bool fill;
+  const OverlayPopup({Key? key, required this.contents, this.heightFactor, this.fill = false}) : super(key: key);
 
   @override
   _OverlayPopupState createState() => _OverlayPopupState();
@@ -23,7 +25,7 @@ class _OverlayPopupState extends State<OverlayPopup> {
         insetPadding: EdgeInsets.fromLTRB(0, 10, 0, 20),
         child: FractionallySizedBox(
             widthFactor: 0.8,
-            heightFactor: 1,
+            heightFactor: widget.fill ? null : (widget.heightFactor ?? 1),
             child: Stack(children: <Widget>[
               Column(children: <Widget>[
                 Expanded(

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:distraction_destruction/screens/auth/sign_in.dart';
+import 'package:distraction_destruction/screens/builders/friend_code.dart';
 import 'package:distraction_destruction/screens/builders/friend_list.dart';
-import 'package:distraction_destruction/screens/builders/overlay_popup.dart';
 import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/screens/pages/active_session.dart';
 import 'package:distraction_destruction/services/database.dart';
@@ -46,10 +45,6 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   Row filterFriends(String text) {
     return Row(
       children: <Widget>[
-        Expanded(
-          child: SizedBox(),
-          flex: 1,
-        ),
         Expanded(child:
         TextFormField(
           controller: _textFieldController,
@@ -75,10 +70,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
           },
         ),
           flex: 5,
-        ),
-        Expanded(
-          child: SizedBox(),
-          flex: 1,)
+        )
       ],
     );
   }
@@ -110,17 +102,61 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
             return Scaffold(
               // backgroundColor: widget.add ? Colors.transparent : Theme.of(context).colorScheme.background,
               body: Container(
-                padding: const EdgeInsets.symmetric(horizontal:30, vertical:5),
+                padding: EdgeInsets.symmetric(
+                    horizontal:widget.add ? 0 : 30,
+                    vertical: widget.add ? 0 : 20),
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+
+                      Visibility(visible:widget.add,
+                          child: IconButton(
+                              onPressed: () async {
+                                String code = await friendScan();
+                                // DocumentSnapshot friendDoc = await DatabaseService().getSpecificUserDataFuture(code);
+                                // DatabaseService().getSpecificUserDataFuture(code)
+                                // DatabaseService().addFriend(code);
+                                String msg;
+                                // if (friendDoc.exists) {
+                                //   msg = friendDoc.
+                                // }
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => SimpleDialog(
+                                      title: Text(code),
+                                      // children:[FriendCode()],
+                                    ));
+                              },
+                              icon: Icon(Icons.camera)
+                          )),
+                      Visibility(visible:widget.add,
+                          child: IconButton(
+                              onPressed: () {
+                                AppUser? user = Provider.of<AppUser?>(context, listen: false);
+                                if ( user != null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => SimpleDialog(
+                                        // title: Text(user.name ?? 'Nameless One'),
+                                        children:[FriendCode(
+                                            user)],
+                                      ));
+                                }},
+                              icon: Icon(Icons.qr_code))),
+                    ],),
                     filterFriends(widget.add ? 'Add Friend' : 'Filter Friends'),
                     SizedBox(height: 20.0,),
                     Expanded(
-                      flex: 6,
+                      flex: 5,
                       child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 7.5,
+                            vertical: 20),
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
