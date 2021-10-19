@@ -147,7 +147,10 @@ class _StartSessionState extends State<StartSession> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (!_userInSession) {
+            if (selectedTime.hour == 0 && selectedTime.minute == 0) {
+              sessionStartInfoDialog('Invalid session time',
+                  'Please make sure you select a time before starting a session');
+            } else if (!_userInSession) {
               print('starting session');
               database.startSession(
                   widget.uid,
@@ -156,9 +159,13 @@ class _StartSessionState extends State<StartSession> {
                   selectedTime.hour,
                   selectedTime.minute,
                   _breaks);
+              Navigator.pop(context, true);
+            } else {
+              Navigator.pop(context, true);
+              sessionStartInfoDialog( widget.name + ' is unavailable',
+                  widget.name + ' is already in a session! You\'ll have to try again later!');
             }
             //TODO else {} Need to indicate to the user that the other user is already in an active session
-            Navigator.pop(context, true);
           },
           child: StreamBuilder<DocumentSnapshot?>(
               stream: database.getUserDocStream(widget.uid),
@@ -185,6 +192,24 @@ class _StartSessionState extends State<StartSession> {
           flex: 3,
         ),
       ],
+    );
+  }
+
+  sessionStartInfoDialog(String title, String content) {
+    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('OK')
+            )
+          ],
+        )
     );
   }
 
