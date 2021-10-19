@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/user.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -57,4 +58,35 @@ Future<String> friendScan() async {
   false,
   ScanMode.QR);
   return scanResult;
+}
+
+void FriendScanFull(BuildContext context) async { // TODO: Turn into future builder?
+
+  String code = await friendScan();
+  AppUser? user = await DatabaseService().getAppUser(code);
+  bool added = await DatabaseService().safelyAddFriend(code);
+
+  final snackBar;
+  if (added) {
+    snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text("Now friends with ${user!.name ?? 'an unknown individual'}."),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {}, // TODO: Implement friendship with <x> ended.
+      ),
+    );
+  } else {
+    snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text("Not a valid user."),
+      action: SnackBarAction(
+        label: 'Try Again', // TODO: Implement restart this scan.
+        onPressed: () {},
+      ),
+    );
+  }
+
+  ScaffoldMessenger.of(context).showSnackBar(
+      snackBar);
 }

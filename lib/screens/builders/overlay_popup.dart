@@ -10,8 +10,14 @@ import 'dart:developer' as dev;
 class OverlayPopup extends StatefulWidget {
   final Widget contents;
   final double? heightFactor;
+  final double? widthFactor;
+  final EdgeInsets? insetPadding;
   final bool fill;
-  const OverlayPopup({Key? key, required this.contents, this.heightFactor, this.fill = false}) : super(key: key);
+  const OverlayPopup({Key? key, required this.contents,
+    this.heightFactor,
+    this.widthFactor,
+    this.fill = false,
+    this.insetPadding}) : super(key: key);
 
   @override
   _OverlayPopupState createState() => _OverlayPopupState();
@@ -23,8 +29,9 @@ class _OverlayPopupState extends State<OverlayPopup> {
     return Dialog(
         backgroundColor: Colors.transparent,
         insetPadding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+
         child: FractionallySizedBox(
-            widthFactor: 0.8,
+            widthFactor: widget.fill ? null : (widget.widthFactor ?? 0.8),
             heightFactor: widget.fill ? null : (widget.heightFactor ?? 1),
             child: Stack(children: <Widget>[
               Column(children: <Widget>[
@@ -36,7 +43,7 @@ class _OverlayPopupState extends State<OverlayPopup> {
                         borderRadius: BorderRadius.circular(15),
                           color: Theme.of(context).colorScheme.surface,
                     ),
-                    // padding: EdgeInsets.fromLTRB(20,20,20,20),
+                    padding: widget.insetPadding,
                     child: widget.contents,
                   ),
                 ),

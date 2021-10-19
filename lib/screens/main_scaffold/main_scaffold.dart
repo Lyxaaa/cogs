@@ -146,6 +146,8 @@ class _MainScaffoldPageState extends State<MainScaffoldPage>
                               showDialog(
                                   context: context,
                                   builder: (_) => OverlayPopup(
+                                        widthFactor: 0.9,
+                                        heightFactor: 0.9,
                                         contents: Friends(
                                           add: true,
                                         ),

@@ -26,7 +26,7 @@ class Friends extends StatefulWidget {
 class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   bool _add = false;
   final DatabaseService database = DatabaseService();
-  final _textFieldController = TextEditingController();
+  final TextEditingController _textFieldController = TextEditingController();
 
   @override
   void dispose() {
@@ -47,6 +47,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
       children: <Widget>[
         Expanded(child:
         TextFormField(
+          autofocus: true,
           controller: _textFieldController,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
@@ -65,7 +66,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
           ),
           onChanged: (input) {
             setState(() {
-              _textFieldController.text = input;
+              search  = input;
             });
           },
         ),
@@ -83,8 +84,8 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
 
     super.build(context);
     //Puts the cursor at the end of the search box after the setState build reset
-    _textFieldController.selection = TextSelection.fromPosition(TextPosition(
-        offset: _textFieldController.text.length));
+    // _textFieldController.selection = TextSelection.fromPosition(TextPosition(
+    //     offset: _textFieldController.text.length));
     return StreamBuilder<DocumentSnapshot?>(
       //TODO set loading screen here to prevent error screen from momentarily showing
       stream: database.userDetailsStream,
@@ -102,9 +103,10 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
             return Scaffold(
               // backgroundColor: widget.add ? Colors.transparent : Theme.of(context).colorScheme.background,
               body: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal:widget.add ? 0 : 30,
-                    vertical: widget.add ? 0 : 20),
+                // color: widget.add ? Colors.transparent : Theme.of(context).colorScheme.onBackground,
+                padding: widget.add ? null : const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 20),
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
                 child: Column(
@@ -118,36 +120,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                       Visibility(visible:widget.add,
                           child: IconButton(
                               // TODO: Break this function out.
-                              onPressed: () async {
-
-                                String code = await friendScan();
-                                AppUser? user = await DatabaseService().getAppUser(code);
-                                bool added = await DatabaseService().safelyAddFriend(code);
-
-                                final snackBar;
-                                if (added) {
-                                  snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text("Now friends with ${user!.name ?? 'an unknown individual'}."),
-                                    action: SnackBarAction(
-                                      label: 'Undo',
-                                      onPressed: () {}, // TODO: Implement friendship with <x> ended.
-                                    ),
-                                  );
-                                } else {
-                                  snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text("Not a valid user."),
-                                    action: SnackBarAction(
-                                      label: 'Try Again', // TODO: Implement restart this scan.
-                                      onPressed: () {},
-                                    ),
-                                  );
-                                }
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    snackBar);
-                              },
+                              onPressed: () => {FriendScanFull(context)},
                               icon: Icon(Icons.camera)
                           )),
                       ///// QR Generator
@@ -178,6 +151,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Theme.of(context).backgroundColor,
+                            // color: Colors.transparent,
                         ),
                         child: FriendList(add: widget.add,
                           searchQuery: _textFieldController.text,),
