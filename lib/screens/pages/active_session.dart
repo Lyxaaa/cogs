@@ -74,7 +74,7 @@ class _ActiveSessionPage extends State<ActiveSession>
                     Timestamp endTime = sessionInfo['end'];
                     String thisUser = database.uid;
                     String otherUser = userInfo['session_uid'];
-                    String otherName = sessionInfo['name'];
+                    String otherName = sessionInfo[otherUser+'name'];
                     int hours = sessionInfo['hours'];
                     int minutes = sessionInfo['minutes'];
                     //TODO Make this look pretty
