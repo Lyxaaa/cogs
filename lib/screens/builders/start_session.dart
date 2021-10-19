@@ -3,6 +3,7 @@ import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class StartSession extends StatefulWidget {
@@ -49,6 +50,7 @@ class _StartSessionState extends State<StartSession> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
                 onPressed: () {
@@ -66,7 +68,7 @@ class _StartSessionState extends State<StartSession> {
                     selectedTime = TimeOfDay(hour: hours, minute: mins);
                   });
                 },
-                icon: Icon(Icons.remove_circle_outline)),
+                icon: const Icon(Icons.remove_circle_outline)),
             ElevatedButton(
               onPressed: () {
                 _selectTime(context);
@@ -76,7 +78,7 @@ class _StartSessionState extends State<StartSession> {
                     "${selectedTime.minute} minutes",
                 style: const TextStyle(fontSize: 15.0),
               ),
-              style: ButtonStyle(),
+              style: const ButtonStyle(),
             ),
             IconButton(
                 onPressed: () {
@@ -90,56 +92,72 @@ class _StartSessionState extends State<StartSession> {
                     selectedTime = TimeOfDay(hour: hours, minute: mins);
                   });
                 },
-
-                icon: Icon(Icons.add_circle_outline))
+                icon: const Icon(Icons.add_circle_outline))
           ],
         ),
         const Expanded(
           child: SizedBox(),
           flex: 1,
         ),
-        const Text(
-          'Set Breaks',
-          style: TextStyle(
-            fontSize: 16.0,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: ShapeDecoration(
+            color: Theme.of(context).primaryColor,
+            shadows: const [
+              BoxShadow(color: Colors.black, offset: Offset(2, 2))
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+            ),
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    _breaks = _breaks == 0 ? 0 : _breaks - 1;
-                  });
-                },
-                icon: const Icon(Icons.remove_circle_outline)),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  NumberPicker(
-                    value: _breaks,
-                    minValue: 0,
-                    maxValue: 100,
-                    onChanged: (value) => setState(() => _breaks = value),
-                  );
-                });
-              },
-              child: Text(
-                _breaks.toString(),
-                style: const TextStyle(fontSize: 15.0),
+          child: Column(
+            children: [
+              const Text(
+                'Set Breaks',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
               ),
-              style: const ButtonStyle(),
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _breaks = _breaks + 1;
-                });
-              },
-              icon: const Icon(Icons.add_circle_outline),
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _breaks = _breaks == 0 ? 0 : _breaks - 1;
+                        });
+                      },
+                      icon: const Icon(Icons.remove_circle_outline)),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        NumberPicker(
+                          value: _breaks,
+                          minValue: 0,
+                          maxValue: 100,
+                          onChanged: (value) => setState(() => _breaks = value),
+                        );
+                      });
+                    },
+                    child: Text(
+                      _breaks.toString(),
+                      style: const TextStyle(fontSize: 15.0),
+                    ),
+                    style: const ButtonStyle(),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _breaks = _breaks + 1;
+                      });
+                    },
+                    icon: const Icon(Icons.add_circle_outline),
+                  ),
+                ],
+              ),
+            ],
+          )
         ),
         const Expanded(
           child: SizedBox(),
