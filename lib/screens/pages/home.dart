@@ -53,14 +53,22 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
-                  Text(
-                    title(),
+                  Text(title(),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
                     ),
                   ),
-                  lastSessionInfo(userInfo['session_uid'], userInfo['session_active']),
+                  Container(
+                    margin: EdgeInsets.all(20.0),
+                    color: Theme
+                        .of(context)
+                        .cardColor,
+                    padding: EdgeInsets.all(20.0),
+                    alignment: Alignment.topCenter,
+                    child: lastSessionInfo(
+                        userInfo['session_uid'], userInfo['session_active']),
+                  ),
                 ],
               ),
             ),
@@ -70,21 +78,17 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
     );
   }
 
+
   StreamBuilder lastSessionInfo(String sessionUid, bool inSession) {
     return StreamBuilder<DocumentSnapshot?>(
       stream: database.getSessionStream(sessionUid),
       initialData: null,
       builder: (context, snapshot) {
-        print("session: " + snapshot.data!.data().toString());
-        if (!snapshot.hasData) {
+        print("session b: " + snapshot.data!.data().toString());
+        if (!snapshot.hasData || snapshot.hasError) {
           return const Load();
-        } else if (snapshot.data == null){
-          return Container(
-            margin: EdgeInsets.all(20.0),
-            color: Theme.of(context).cardColor,
-            padding: EdgeInsets.all(20.0),
-            alignment: Alignment.topCenter,
-            child: Column(
+        } else if (!snapshot.data!.exists || snapshot.data == null) {
+          return Column(
               children: [
                 Text('You have no session history',
                   style: const TextStyle(
@@ -99,7 +103,6 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                   ),
                 ),
               ],
-            ),
           );
         } else {
           var sessionInfo = snapshot.data!.data() as Map<String, dynamic>;
@@ -113,12 +116,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
           int totalSeconds = endTime.seconds - startTime.seconds;
           int totalHours = (totalSeconds/3600).floor();
           int totalMinutes = (totalSeconds/60).floor().remainder(60);
-          return Container(
-            margin: EdgeInsets.all(20.0),
-            color: Theme.of(context).cardColor,
-            padding: EdgeInsets.all(20.0),
-            alignment: Alignment.topCenter,
-            child: Column(
+          return Column(
               children: [
                 Text(inSession
                     ? 'You\'re still in a session with $otherName!'
@@ -141,7 +139,6 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                   ),
                 ),
               ],
-            ),
           );
         }
       },
