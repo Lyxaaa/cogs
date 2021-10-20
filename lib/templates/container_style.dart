@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class CardContainer extends StatefulWidget {
   final Widget child;
   final bool expand;
+  final double margin;
 
-  const CardContainer({required this.child, this.expand=false});
+  const CardContainer({required this.child, this.expand=false, this.margin = 20});
 
   @override
   _CardContainerState createState() => _CardContainerState();
@@ -17,17 +18,17 @@ class _CardContainerState extends State<CardContainer> {
       return Row(
         children: [
           Expanded(
-              child: createCard(context, widget.child)),
+              child: createCard(context, widget.child, widget.margin)),
         ],
       );
     }
-    return createCard(context, widget.child);
+    return createCard(context, widget.child, widget.margin);
   }
 }
 
-Container createCard(context, child) {
+Container createCard(context, child, margin) {
   return Container(
-    margin: const EdgeInsets.all(20),
+    margin: EdgeInsets.all(margin),
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     decoration: ShapeDecoration(
       color: Theme.of(context).secondaryHeaderColor,

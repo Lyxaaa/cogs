@@ -1,6 +1,7 @@
 import 'package:distraction_destruction/services/auth_svc.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:distraction_destruction/templates/profile_pic.dart';
+import 'package:distraction_destruction/templates/container_style.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,9 +19,9 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,16 +35,15 @@ class _ProfileState extends State<Profile> {
                       }
                     }
                     ),
-                const SizedBox(
-                  width: 30,
+                CardContainer(
+                  child: Text(database.name,
+                    style: const TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ),
-                Text(database.name,
-                  style: const TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Expanded(
+                const Expanded(
                   child: SizedBox(),
                 ),
                 IconButton(
@@ -64,7 +64,109 @@ class _ProfileState extends State<Profile> {
               style: TextStyle(
                 fontSize: 20.0,
               ),
-            )
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            CardContainer(
+              margin: 5,
+              child: Row(
+                children: [
+                  const Expanded(
+                      flex: 9,
+                      child: SizedBox(height: 90),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: RichText(
+                      text: TextSpan(
+                        text: '2',
+                        style: Theme.of(context).textTheme.headline3,
+                        children: <TextSpan>[
+                          TextSpan(text: 'sessions', style: Theme.of(context).textTheme.bodyText2)
+                        ]
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            CardContainer(
+              margin: 5,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 8,
+                    child: RichText(
+                      text: TextSpan(
+                          text: 'Session Average \n \n',
+                          style: Theme.of(context).textTheme.headline6,
+                          children: <TextSpan>[
+                            TextSpan(text: 'Average Number of minutes per session', style: Theme.of(context).textTheme.overline)
+                          ]
+                      ),
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(height: 90),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: RichText(
+                      text: TextSpan(
+                          text: '21',
+                          style: Theme.of(context).textTheme.headline3,
+                          children: <TextSpan>[
+                            TextSpan(text: 'minutes', style: Theme.of(context).textTheme.bodyText2)
+                          ]
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            CardContainer(
+              margin: 5,
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 8,
+                      child: RichText(
+                        text: TextSpan(
+                            text: 'Level of Focus \n \n',
+                            style: Theme.of(context).textTheme.headline6,
+                            children: <TextSpan>[
+                              TextSpan(text: 'Amount of time you stay focused during a session', style: Theme.of(context).textTheme.overline)
+                            ]
+                        ),
+                      ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(height: 90),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: RichText(
+                      text: TextSpan(
+                          text: '77',
+                          style: Theme.of(context).textTheme.headline3,
+                          children: <TextSpan>[
+                            TextSpan(text: '%', style: Theme.of(context).textTheme.bodyText2)
+                          ]
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ]
       ),
     );
