@@ -104,6 +104,7 @@ class _MainScaffoldPageState extends State<MainScaffoldPage>
             var userInfo = snapshot.data!.data() as Map<String, dynamic>;
             //setSessionState(userInfo['session_active']);
             database.setName(userInfo['name']);
+            database.setLanguageType(userInfo['language_type']);
             return Scaffold(
                 backgroundColor: Theme.of(context).canvasColor,
                 appBar: AppBar(
@@ -112,7 +113,9 @@ class _MainScaffoldPageState extends State<MainScaffoldPage>
                         showDialog(
                             context: context,
                             builder: (_) =>
-                                OverlayPopup(contents: Profile()));
+                                OverlayPopup(contents: Profile()
+                                )
+                        );
                       },
                       icon: Icon(Icons.account_circle)),
 

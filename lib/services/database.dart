@@ -17,6 +17,7 @@ class DatabaseService {
   String? _uid;
   String? _name;
   String? _profilePicUrl;
+  bool languageType = false;
 
   bool _lock = false;
   bool _lockName = false;
@@ -51,6 +52,10 @@ class DatabaseService {
       _databaseService._name = name;
       _databaseService._lockName = true;
     }
+  }
+
+  void setLanguageType(bool type) {
+    languageType = type;
   }
 
   void setPic(String url) {
@@ -92,7 +97,8 @@ class DatabaseService {
     await userCollection.doc(uid).set({
       'name': name,
       'session_active': false,
-      'session_uid': ''
+      'session_uid': '',
+      'language_type': false,
     });
   }
 

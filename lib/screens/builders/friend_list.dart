@@ -40,6 +40,7 @@ class _FriendListState extends State<FriendList> {
                     if (widget.add) {
                       show = false;
                       //TODO uncomment this later, only keeping it for expo
+                      //TODO remove people the user is already friends with
                       if (/*widget.searchQuery.length > 2
                           &&*/ friendInfo['name'].toString().toLowerCase()
                               .contains(widget.searchQuery) && uid != database.uid) {

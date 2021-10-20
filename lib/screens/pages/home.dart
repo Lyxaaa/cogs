@@ -150,10 +150,11 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                   inSession
                       ? 'Head back to your friends screen to continue your session'
                       : 'Your session lasted '
-                          '${totalHours > 0 ? '${totalHours.toString()} hours ' : ''}'
-                          '${totalHours > 0 && totalMinutes > 0 ? 'and ' : ''}'
-                          '${totalHours == 0 || totalMinutes > 0 ? '${totalMinutes.toString()} minute' : ''}'
-                          '${totalMinutes != 1 ? 's' : ''}, and you kept focus for...',
+                      '${totalHours > 0 ? '${totalHours.toString()} hours ' : ''}'
+                      '${totalHours > 0 && totalMinutes > 0 ? 'and ' : ''}'
+                      '${totalHours == 0 || totalMinutes > 0 ? '${totalMinutes.toString()} minute' : ''}'
+                      '${totalMinutes != 1 ? 's' : ''}, '
+                      '${database.languageType ? 'and you kept focus for...' : 'but you only kept focus for...'}',
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 15.0,
@@ -248,7 +249,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                   Text(
                     inSession
                         ? 'You\'re still in a session with $otherName!'
-                        : 'You have the most fun with...',
+                        : database.languageType ? 'You work best with...' : 'You work worst with...',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,

@@ -247,6 +247,14 @@ class _ActiveSessionPage extends State<ActiveSession>
                 expand: true,
             ),
             ),
+            Text(database.languageType
+                ? 'Starting is the hardest part!'
+                : 'Don\'t you have better things to do?',
+              style: TextStyle(
+                  fontSize: 20.0
+              ),
+            ),
+            SizedBox(height: 20.0),
             ElevatedButton(
                 onPressed: () {
                   database.endSession(sessionUid);
