@@ -129,7 +129,6 @@ class DatabaseService {
   }
 
   Stream<DocumentSnapshot> getSessionStream(String uid) {
-    print("Session hash: " + uidHash(this.uid, uid).toString() + " From: ${this.uid} : $uid");
     return sessionCollection.doc(uidHash(this.uid, uid).toString()).snapshots();
   }
 

@@ -26,32 +26,30 @@ class _ProfileState extends State<Profile> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ProfilePic(
-                    onTap: () async {
-                      PickedFile? pic = await ImagePicker.platform.pickImage(
-                          source: ImageSource.gallery);
-                      if (pic != null) {
-                        database.uploadProfilePic(pic);
-                      }
-                    }
-                    ),
+                ProfilePic(onTap: () async {
+                  PickedFile? pic = await ImagePicker.platform
+                      .pickImage(source: ImageSource.gallery);
+                  if (pic != null) {
+                    database.uploadProfilePic(pic);
+                  }
+                }),
                 CardContainer(
-                  child: Text(database.name,
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ),
+                    child: Text(
+                  database.name,
+                  style: const TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
                 const Expanded(
                   child: SizedBox(),
                 ),
                 IconButton(
-                    onPressed: () async {
-                      Navigator.of(context).pop();
-                      await _auth.signOut();
-                    },
-                    icon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await _auth.signOut();
+                  },
+                  icon: const Icon(Icons.logout),
                   alignment: Alignment.topRight,
                 ),
               ],
@@ -60,7 +58,7 @@ class _ProfileState extends State<Profile> {
               height: 30,
             ),
             const Text(
-                "Sessions:",
+              "Sessions:",
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -73,19 +71,20 @@ class _ProfileState extends State<Profile> {
               child: Row(
                 children: [
                   const Expanded(
-                      flex: 9,
-                      child: SizedBox(height: 90),
+                    flex: 9,
+                    child: SizedBox(height: 90),
                   ),
                   Expanded(
                     flex: 5,
                     child: RichText(
                       text: TextSpan(
-                        text: '2',
-                        style: Theme.of(context).textTheme.headline3,
-                        children: <TextSpan>[
-                          TextSpan(text: 'sessions', style: Theme.of(context).textTheme.bodyText2)
-                        ]
-                      ),
+                          text: '2',
+                          style: Theme.of(context).textTheme.headline3,
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'sessions',
+                                style: Theme.of(context).textTheme.bodyText2)
+                          ]),
                     ),
                   )
                 ],
@@ -100,14 +99,16 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Expanded(
                     flex: 8,
-                    child: RichText(
-                      text: TextSpan(
-                          text: 'Session Average \n \n',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Session Average\n',
                           style: Theme.of(context).textTheme.headline6,
-                          children: <TextSpan>[
-                            TextSpan(text: 'Average Number of minutes per session', style: Theme.of(context).textTheme.overline)
-                          ]
-                      ),
+                        ),
+                        Text('Average Number of minutes per session',
+                            style: Theme.of(context).textTheme.overline
+                        ),
+                      ],
                     ),
                   ),
                   const Expanded(
@@ -121,9 +122,10 @@ class _ProfileState extends State<Profile> {
                           text: '21',
                           style: Theme.of(context).textTheme.headline3,
                           children: <TextSpan>[
-                            TextSpan(text: 'minutes', style: Theme.of(context).textTheme.bodyText2)
-                          ]
-                      ),
+                            TextSpan(
+                                text: 'minutes',
+                                style: Theme.of(context).textTheme.bodyText2)
+                          ]),
                     ),
                   )
                 ],
@@ -137,16 +139,18 @@ class _ProfileState extends State<Profile> {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 8,
-                      child: RichText(
-                        text: TextSpan(
-                            text: 'Level of Focus \n \n',
-                            style: Theme.of(context).textTheme.headline6,
-                            children: <TextSpan>[
-                              TextSpan(text: 'Amount of time you stay focused during a session', style: Theme.of(context).textTheme.overline)
-                            ]
+                    flex: 8,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Level of Focus\n',
+                          style: Theme.of(context).textTheme.headline6,
                         ),
-                      ),
+                        Text('Amount of time you stay focused during a session',
+                            style: Theme.of(context).textTheme.overline
+                        ),
+                      ],
+                    ),
                   ),
                   const Expanded(
                     flex: 1,
@@ -159,16 +163,16 @@ class _ProfileState extends State<Profile> {
                           text: '77',
                           style: Theme.of(context).textTheme.headline3,
                           children: <TextSpan>[
-                            TextSpan(text: '%', style: Theme.of(context).textTheme.bodyText2)
-                          ]
-                      ),
+                            TextSpan(
+                                text: '%',
+                                style: Theme.of(context).textTheme.bodyText2)
+                          ]),
                     ),
                   )
                 ],
               ),
             ),
-          ]
-      ),
+          ]),
     );
   }
 }
