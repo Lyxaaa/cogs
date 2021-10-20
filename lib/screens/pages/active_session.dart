@@ -29,6 +29,7 @@ class _ActiveSessionPage extends State<ActiveSession>
   int _current = 0;
   bool _timerStarted = false;
   late CountdownTimer _timer;
+  bool _timerElapsed = false;
   var _sub;
 
   String title() {
@@ -209,7 +210,7 @@ class _ActiveSessionPage extends State<ActiveSession>
   Scaffold active(
       String sessionUid, String name, int hours, int minutes,
       Timestamp startTime, int now) {
-    beginTimer(sessionUid, hours, minutes, startTime, now);
+    beginTimer(name, sessionUid, hours, minutes, startTime, now);
 
     return Scaffold(
       // backgroundColor: Colors.lightBlue[100],
@@ -238,10 +239,12 @@ class _ActiveSessionPage extends State<ActiveSession>
                         DateFormat('kk:mm').format(startTime.toDate()),
                         'Session started with $name'
                     ),
-                    activityRow(
+                    _timerElapsed
+                        ? activityRow(
                         DateFormat('kk:mm').format(startTime.toDate().add(Duration(minutes: 5))),
                         '$name just opened Twitter!'
-                    ),
+                    )
+                        : SizedBox(),
                   ],
                 ),
                 expand: true,
@@ -281,6 +284,38 @@ class _ActiveSessionPage extends State<ActiveSession>
     );
   }
 
+  userActivityDialog(String title, String content) {
+    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Row(
+            children: [
+              Image.asset('assets/twitter.png',
+              width: 30.0,
+              height: 30.0,
+              ),
+              Text(title),
+            ],
+          ),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context, database.languageType ? 'Check it out' : 'Have fun');
+                },
+                child: Text(database.languageType ? 'Check it out' : 'Have fun')
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context, database.languageType ? 'Ignore' : 'Be boring');
+                },
+                child: Text(database.languageType ? 'Ignore' : 'Be boring')
+            ),
+          ],
+        )
+    );
+  }
+
   Row activityRow(String time, String text) {
     return Row(
       children: [
@@ -315,7 +350,7 @@ class _ActiveSessionPage extends State<ActiveSession>
     return duration;
   }
 
-  void beginTimer(
+  void beginTimer(String name,
       String otherUid, int hours, int minutes, Timestamp startTime, int now) {
     int durationNeeded =
         ((hours * 60 + minutes) * 60) - (now - startTime.seconds);
@@ -329,6 +364,12 @@ class _ActiveSessionPage extends State<ActiveSession>
       _sub.onData((duration) {
         setState(() {
           _current = durationNeeded - duration.elapsed.inSeconds as int;
+          if (duration.elapsed.inSeconds == 6) {
+            _timerElapsed = true;
+            userActivityDialog("Twitter",  database.languageType
+                ? '$name just went on Twitter!'
+                : 'There\'s some new posts you need to check out!');
+          }
         });
       });
 
