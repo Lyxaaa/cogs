@@ -47,7 +47,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
       children: <Widget>[
         Expanded(child:
         TextFormField(
-          autofocus: true,
+          autofocus: widget.add ? true : false,
           controller: _textFieldController,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
