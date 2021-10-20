@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/database.dart';
+import 'package:distraction_destruction/templates/container_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -42,74 +43,70 @@ class _StartSessionState extends State<StartSession> {
           child: SizedBox(),
           flex: 1,
         ),
-        const Text(
-          'Set Session Length',
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    int hours = selectedTime.hour;
-                    int mins = selectedTime.minute - 5;
-                    if (mins < 0) {
-                      if (hours != 0) {
-                        mins += 60;
-                        hours -= 1;
-                      } else {
-                        mins = 0;
-                      }
-                    }
-                    selectedTime = TimeOfDay(hour: hours, minute: mins);
-                  });
-                },
-                icon: const Icon(Icons.remove_circle_outline)),
-            ElevatedButton(
-              onPressed: () {
-                _selectTime(context);
-              },
-              child: Text(
-                ((selectedTime.hour > 0) ? "${selectedTime.hour} hours, " : "") +
-                    "${selectedTime.minute} minutes",
-                style: const TextStyle(fontSize: 15.0),
+        CardContainer(
+          child: Column(
+            children: [
+              const Text(
+                'Set Session Length',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
               ),
-              style: const ButtonStyle(),
-            ),
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    int hours = selectedTime.hour;
-                    int mins = selectedTime.minute + 5;
-                    if (mins >= 60) {
-                      mins -= 60;
-                      hours += 1;
-                    }
-                    selectedTime = TimeOfDay(hour: hours, minute: mins);
-                  });
-                },
-                icon: const Icon(Icons.add_circle_outline))
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          int hours = selectedTime.hour;
+                          int mins = selectedTime.minute - 5;
+                          if (mins < 0) {
+                            if (hours != 0) {
+                              mins += 60;
+                              hours -= 1;
+                            } else {
+                              mins = 0;
+                            }
+                          }
+                          selectedTime = TimeOfDay(hour: hours, minute: mins);
+                        });
+                      },
+                      icon: const Icon(Icons.remove_circle_outline)),
+                  ElevatedButton(
+                    onPressed: () {
+                      _selectTime(context);
+                    },
+                    child: Text(
+                      ((selectedTime.hour > 0) ? "${selectedTime.hour} hours, " : "") +
+                          "${selectedTime.minute} minutes",
+                      style: const TextStyle(fontSize: 15.0),
+                    ),
+                    style: const ButtonStyle(),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          int hours = selectedTime.hour;
+                          int mins = selectedTime.minute + 5;
+                          if (mins >= 60) {
+                            mins -= 60;
+                            hours += 1;
+                          }
+                          selectedTime = TimeOfDay(hour: hours, minute: mins);
+                        });
+                      },
+                      icon: const Icon(Icons.add_circle_outline))
+                ],
+              ),
+            ],
+          )
         ),
         const Expanded(
           child: SizedBox(),
           flex: 1,
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ShapeDecoration(
-            color: Theme.of(context).primaryColor,
-            shadows: const [
-              BoxShadow(color: Colors.black, offset: Offset(2, 2))
-            ],
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-            ),
-          ),
+        CardContainer(
           child: Column(
             children: [
               const Text(

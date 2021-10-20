@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 // Theming generator https://flutter-theme-editor.rob-b.co.uk/#/
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -10,7 +9,7 @@ final ThemeData lightTheme = ThemeData(
       style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30)),
+          borderRadius: BorderRadius.circular(30)),
           primary: Colors.grey,
           textStyle: const TextStyle(fontSize: 17, color: Colors.black),
           elevation: 30.0,
