@@ -44,14 +44,32 @@ class _ProfileState extends State<Profile> {
                 const Expanded(
                   child: SizedBox(),
                 ),
-                IconButton(
-                  onPressed: () async {
-                    Navigator.of(context).pop();
-                    await _auth.signOut();
-                  },
-                  icon: const Icon(Icons.logout),
-                  alignment: Alignment.topRight,
-                ),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        await _auth.signOut();
+                      },
+                      icon: const Icon(Icons.logout),
+                      alignment: Alignment.topRight,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          database.updateLanguageType(!database.languageType);
+                        });
+                        },
+                      child: Text(database.languageType ? 'Positive\nMode' : 'Negative\nMode',
+                        textAlign: TextAlign.center,
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: database.languageType ? MaterialStateProperty.all(Colors.blue) : MaterialStateProperty.all(Theme.of(context).errorColor),
+                      ),
+                    ),
+                  ],
+                )
+
               ],
             ),
             const SizedBox(

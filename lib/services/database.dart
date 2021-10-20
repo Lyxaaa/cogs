@@ -138,6 +138,13 @@ class DatabaseService {
     return sessionCollection.doc(uidHash(this.uid, uid).toString()).snapshots();
   }
 
+  void updateLanguageType(bool type) {
+    userCollection.doc(uid).update({
+      'language_type': type,
+    });
+    languageType = type;
+  }
+
   void addFriend(String uid) {
     userCollection.doc(this.uid).collection('friends').doc(uid).set({
       //'name': userCollection.doc(uid).snapshots().map((event) => event.data()),
