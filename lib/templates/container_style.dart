@@ -13,7 +13,7 @@ class CardContainer extends StatefulWidget {
 class _CardContainerState extends State<CardContainer> {
   @override
   Widget build(BuildContext context) {
-    if (widget.expand) {
+    if (false) {
       return Row(
         children: [
           Expanded(

@@ -37,8 +37,8 @@ class DatabaseService {
   String get name => _name!;
   String? get profilePicUrl => _profilePicUrl;
 
-  int uidHash(String s1, String s2) =>
-      (<String>[s1, s2]..sort()).join().hashCode;
+  String uidHash(String s1, String s2) =>
+      (<String>[s1, s2]..sort()).join();
 
   //Do not use this method, it should only ever be touched upon signout
   void unlockDatabase() {
@@ -120,7 +120,6 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
-
   Future<DocumentSnapshot<Object?>> get userDataFuture {
     return userCollection.doc(uid).get();
   }
@@ -130,6 +129,7 @@ class DatabaseService {
   }
 
   Stream<DocumentSnapshot> getSessionStream(String uid) {
+    print("Session hash: " + uidHash(this.uid, uid).toString() + " From: ${this.uid} : $uid");
     return sessionCollection.doc(uidHash(this.uid, uid).toString()).snapshots();
   }
 

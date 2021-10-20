@@ -65,15 +65,24 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   Expanded(
                     child: lastSessionInfo(
                         userInfo['session_uid'], userInfo['session_active']),
+                    flex: 8,
+                  ),
+                  Spacer(
+                    flex: 1,
                   ),
                   Expanded(
                     child: bestFriendInfo(
                         userInfo['session_uid'], userInfo['session_active']),
+                    flex: 8,
                   ),
+                  Spacer(
+                    flex: 4,
+                  )
                 ],
               ),
             ),
@@ -126,6 +135,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
           int totalMinutes = (totalSeconds / 60).floor().remainder(60);
           return CardContainer(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   inSession
@@ -143,7 +153,25 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                           '${totalHours > 0 ? '${totalHours.toString()} hours ' : ''}'
                           '${totalHours > 0 && totalMinutes > 0 ? 'and ' : ''}'
                           '${totalHours == 0 || totalMinutes > 0 ? '${totalMinutes.toString()} minute' : ''}'
-                          '${totalMinutes != 1 ? 's' : ''}',
+                          '${totalMinutes != 1 ? 's' : ''}, and you kept focus for...',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15.0,
+                  ),
+                ),
+                Text(
+                  inSession
+                      ? ''
+                      : '57%',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 45.0,
+                  ),
+                ),
+                Text(
+                  inSession
+                      ? ''
+                      : 'of the session',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0,
@@ -215,16 +243,18 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
             },
             child: CardContainer(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     inSession
                         ? 'You\'re still in a session with $otherName!'
-                        : 'You work best with $otherName',
+                        : 'You have the most fun with...',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
                     ),
                   ),
+                  Spacer(),
                   FutureBuilder<String>(
                       future: database.findProfilePicUrl(sessionUid),
                       builder: (context, snapshot) {
@@ -233,9 +263,16 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                           const SizedBox(
                             width: 20,
                           ),
-                          Text(otherName),
+                          Text(otherName,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
                         ]);
-                      }),
+                      }
+                      ),
+                  Spacer(),
                   Text(
                     inSession
                         ? 'Tap to end your session with $otherName'
