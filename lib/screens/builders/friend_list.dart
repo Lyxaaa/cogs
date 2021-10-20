@@ -39,8 +39,9 @@ class _FriendListState extends State<FriendList> {
                     var friendInfo = userCollectionSnapshot.data!.docs[index].data() as Map<String, dynamic>;
                     if (widget.add) {
                       show = false;
-                      if (widget.searchQuery.length > 2
-                          && friendInfo['name'].toString().toLowerCase()
+                      //TODO uncomment this later, only keeping it for expo
+                      if (/*widget.searchQuery.length > 2
+                          &&*/ friendInfo['name'].toString().toLowerCase()
                               .contains(widget.searchQuery) && uid != database.uid) {
                         show = true;
                       }
