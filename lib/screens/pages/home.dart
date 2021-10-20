@@ -57,6 +57,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
             body: Container(
               alignment: Alignment.center,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                     title(),
