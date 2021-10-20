@@ -12,10 +12,12 @@ class OverlayPopup extends StatefulWidget {
   final double? heightFactor;
   final double? widthFactor;
   final EdgeInsets? insetPadding;
+  final Color? backgroundColor;
   final bool fill;
   const OverlayPopup({Key? key, required this.contents,
     this.heightFactor,
     this.widthFactor,
+    this.backgroundColor,
     this.fill = false,
     this.insetPadding}) : super(key: key);
 
@@ -27,6 +29,7 @@ class _OverlayPopupState extends State<OverlayPopup> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+        // backgroundColor: widget.backgroundColor ?? Colors.transparent,
         backgroundColor: Colors.transparent,
         insetPadding: EdgeInsets.fromLTRB(0, 10, 0, 20),
 
@@ -41,7 +44,7 @@ class _OverlayPopupState extends State<OverlayPopup> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                          color: Theme.of(context).colorScheme.surface,
+                          color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
                     ),
                     padding: widget.insetPadding,
                     child: widget.contents,

@@ -154,7 +154,8 @@ class _MainScaffoldPageState extends State<MainScaffoldPage>
                                         contents: Friends(
                                           add: true,
                                         ),
-                                      ));
+                                      )
+                              ).then((value) => {FocusScope.of(context).unfocus()});
                             },
                             icon: Icon(Icons.person_add),
                             // color: Colors.black87,

@@ -31,6 +31,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
     _textFieldController.dispose();
+
     super.dispose();
   }
 
@@ -60,6 +61,7 @@ class _FriendList extends State<Friends> with AutomaticKeepAliveClientMixin {
             suffixIcon: IconButton(
               icon: Icon(Icons.clear),
               onPressed: () { setState(() {
+                FocusScope.of(context).unfocus();
                 _textFieldController.clear();
               });},
             ),

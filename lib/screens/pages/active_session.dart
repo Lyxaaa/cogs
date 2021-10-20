@@ -165,7 +165,10 @@ class _ActiveSessionPage extends State<ActiveSession>
   Scaffold waitingForAccept(String sessionUid, String name) {
     return Scaffold(
       // backgroundColor: Colors.lightBlue[100],
-      body: Center(
+      body:
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+        child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -193,7 +196,7 @@ class _ActiveSessionPage extends State<ActiveSession>
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all(CircleBorder()),
                     padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(40)),
+                        MaterialStateProperty.all(const EdgeInsets.all(50)),
                     backgroundColor: MaterialStateProperty.all(Colors.amber)
                 )
             ),
@@ -204,7 +207,7 @@ class _ActiveSessionPage extends State<ActiveSession>
           ],
         ),
       ),
-    );
+    ));
   }
 
   Scaffold active(

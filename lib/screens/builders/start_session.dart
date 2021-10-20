@@ -20,13 +20,14 @@ class StartSession extends StatefulWidget {
 
 class _StartSessionState extends State<StartSession> {
   DatabaseService database = DatabaseService();
-  TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay selectedTime = TimeOfDay(hour: 0, minute: 30);
   bool _userInSession = false;
   int _breaks = 0;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Expanded(
           child: SizedBox(),
@@ -38,6 +39,8 @@ class _StartSessionState extends State<StartSession> {
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
+          softWrap: true,
         ),
         const Expanded(
           child: SizedBox(),
@@ -56,36 +59,46 @@ class _StartSessionState extends State<StartSession> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          int hours = selectedTime.hour;
-                          int mins = selectedTime.minute - 5;
-                          if (mins < 0) {
-                            if (hours != 0) {
-                              mins += 60;
-                              hours -= 1;
-                            } else {
-                              mins = 0;
-                            }
-                          }
-                          selectedTime = TimeOfDay(hour: hours, minute: mins);
-                        });
-                      },
-                      icon: const Icon(Icons.remove_circle_outline)),
+                  IncrementButton(icon: Icons.remove_circle_outline, tap: () {
+                    setState(() {
+                      int hours = selectedTime.hour;
+                      int mins = selectedTime.minute - 5;
+                      if (mins < 0) {
+                        if (hours != 0) {
+                          mins += 60;
+                          hours -= 1;
+                        } else {
+                          mins = 0;
+                        }
+                      }
+                      selectedTime = TimeOfDay(hour: hours, minute: mins);
+                    });
+                  },),
                   ElevatedButton(
                     onPressed: () {
                       _selectTime(context);
                     },
-                    child: Text(
-                      ((selectedTime.hour > 0) ? "${selectedTime.hour} hours, " : "") +
-                          "${selectedTime.minute} minutes",
-                      style: const TextStyle(fontSize: 15.0),
-                    ),
+                    child: SizedBox(width: 60, child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                        SizedBox(width: 20, child:
+    Text("${selectedTime.hour.toString().padLeft(2,'0')}", textAlign: TextAlign.right,
+                            style: const TextStyle(fontSize: 15.0))
+                        ),
+                        Text(' :'),
+                        SizedBox(width: 20,child:Text(
+                                // ((selectedTime.hour > 0) ? "${selectedTime.hour}h " : "") +
+                                // "${selectedTime.minute}m",
+                                "${selectedTime.minute.toString().padLeft(2,'0')}",
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(fontSize: 15.0),
+                            )),
+                         ]
+                    )),
                     style: const ButtonStyle(),
                   ),
-                  IconButton(
-                      onPressed: () {
+                  IncrementButton(
+                      tap: () {
                         setState(() {
                           int hours = selectedTime.hour;
                           int mins = selectedTime.minute + 5;
@@ -96,7 +109,7 @@ class _StartSessionState extends State<StartSession> {
                           selectedTime = TimeOfDay(hour: hours, minute: mins);
                         });
                       },
-                      icon: const Icon(Icons.add_circle_outline))
+                      icon: Icons.add_circle_outline)
                 ],
               ),
             ],
@@ -161,6 +174,10 @@ class _StartSessionState extends State<StartSession> {
           flex: 1,
         ),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            padding: EdgeInsets.all(25),
+          ),
           onPressed: () {
             if (selectedTime.hour == 0 && selectedTime.minute == 0) {
               sessionStartInfoDialog('Invalid session time',
@@ -191,9 +208,9 @@ class _StartSessionState extends State<StartSession> {
                 } else {
                   var otherUser = snapshot.data!.data() as Map<String, dynamic>;
                   _userInSession = otherUser['session_active'];
-                  return const Text(
-                      'Start',
-                      style: TextStyle(
+                  return Text(
+                      'Start'.toUpperCase(),
+                      style: const TextStyle(
                         fontSize: 17.0,
                         fontWeight: FontWeight.bold,
                       )
@@ -228,6 +245,7 @@ class _StartSessionState extends State<StartSession> {
     );
   }
 
+
   _selectTime(BuildContext context) async {
     final TimeOfDay? timeOfDay = await showTimePicker(
         context: context,
@@ -247,5 +265,34 @@ class _StartSessionState extends State<StartSession> {
         selectedTime = timeOfDay;
       });
     }
+  }
+}
+
+class IncrementButton extends StatelessWidget {
+
+  const IncrementButton(
+      { Key? key,
+        this.tap,
+        this.longPress,
+        required this.icon }
+      ) : super(key: key);
+
+  final void Function()? tap;
+  final void Function()? longPress;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        color: Colors.transparent,
+        child: InkWell(
+            onTap: tap,
+            onLongPress: longPress,
+            child: Ink(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(icon),
+            )
+        )
+    );
   }
 }

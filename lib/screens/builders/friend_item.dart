@@ -67,7 +67,9 @@ class _FriendItemState extends State<FriendItem> {
                   showDialog(
                       context: context,
                       builder: (_) =>
-                          OverlayPopup(contents: StartSession(
+                          OverlayPopup(
+                              widthFactor: 0.9,
+                              heightFactor: 0.9,contents: StartSession(
                             name: widget.name, uid: widget.uid,)));
                 },
                 child: Container(

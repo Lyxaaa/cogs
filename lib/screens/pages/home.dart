@@ -59,6 +59,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  SizedBox(height: 10,),
                   Text(
                     title(),
                     style: const TextStyle(
@@ -133,8 +134,9 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
           int totalSeconds = endTime.seconds - startTime.seconds;
           int totalHours = (totalSeconds / 3600).floor();
           int totalMinutes = (totalSeconds / 60).floor().remainder(60);
+
           return CardContainer(
-            child: Column(
+            child: Column(children:[Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -180,7 +182,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                 ),
               ],
             ),
-          );
+            )]));
         }
       },
     );
@@ -234,6 +236,9 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                     context: context,
                     builder: (_) =>
                         OverlayPopup(
+                            backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+                            widthFactor: 0.9,
+                            heightFactor: 0.9,
                             contents: StartSession(
                               name: otherName,
                               uid: sessionUid,
