@@ -1,3 +1,4 @@
+import 'package:distraction_destruction/templates/container_style.dart';
 import 'package:flutter/widgets.dart';
 import 'package:quiver/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:distraction_destruction/screens/auth/sign_in.dart';
 import 'package:distraction_destruction/screens/global/load.dart';
 import 'package:distraction_destruction/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 //Display auth info, allowing users to login, register or await auto login
 class ActiveSession extends StatefulWidget {
@@ -208,6 +210,7 @@ class _ActiveSessionPage extends State<ActiveSession>
       String sessionUid, String name, int hours, int minutes,
       Timestamp startTime, int now) {
     beginTimer(sessionUid, hours, minutes, startTime, now);
+
     return Scaffold(
       // backgroundColor: Colors.lightBlue[100],
       body: Center(
@@ -227,9 +230,22 @@ class _ActiveSessionPage extends State<ActiveSession>
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Expanded(
-              child: SizedBox(),
-              flex: 1,
+            Expanded(
+              child: CardContainer(
+                child: Column(
+                  children: [
+                    activityRow(
+                        DateFormat('kk:mm').format(startTime.toDate()),
+                        'Session started with $name'
+                    ),
+                    activityRow(
+                        DateFormat('kk:mm').format(startTime.toDate().add(Duration(minutes: 5))),
+                        '$name just opened Twitter!'
+                    ),
+                  ],
+                ),
+                expand: true,
+            ),
             ),
             ElevatedButton(
                 onPressed: () {
@@ -254,6 +270,29 @@ class _ActiveSessionPage extends State<ActiveSession>
           ],
         ),
       ),
+    );
+  }
+
+  Row activityRow(String time, String text) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(time,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          flex: 1,
+        ),
+        Expanded(
+          child: Text(text,
+            style: TextStyle(
+                fontSize: 20.0
+            ),
+          ),
+          flex: 5,
+        ),
+      ],
     );
   }
 

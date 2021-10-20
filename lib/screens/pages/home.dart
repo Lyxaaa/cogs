@@ -49,9 +49,7 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
           print("session a: " + snapshot.data!.data().toString());
           var userInfo = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
-            body: Container(
-              alignment: Alignment.topCenter,
-              child: Column(
+              body: Column(
                 children: [
                   Text(title(),
                     style: const TextStyle(
@@ -73,7 +71,6 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
                   ),
                 ],
               ),
-            ),
           );
         }
       },
