@@ -136,8 +136,11 @@ class _HomePage extends State<Home> with AutomaticKeepAliveClientMixin {
           int totalMinutes = (totalSeconds / 60).floor().remainder(60);
 
           return CardContainer(
-            child: Column(children:[Expanded(child: Column(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:[Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   inSession
