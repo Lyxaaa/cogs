@@ -5,7 +5,7 @@
 
 ## Deployment Instructions
 ### Web Access
-You can access the latest build at either [Host A]() or [Host B]()
+You can access the latest build at either [Host A](https://distraction-destruction.web.app/#/) or [Host B](https://distraction-destruction.firebaseapp.com/)
 
 ### Installing Flutter
 https://flutter.dev/docs/get-started/install  
