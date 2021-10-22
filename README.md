@@ -7,6 +7,26 @@
 ### Web Access
 You can access the latest build at either [Host A](https://distraction-destruction.web.app/#/) or [Host B](https://distraction-destruction.firebaseapp.com/)
 
+### Login Credentials
+You can sign up using your own account.
+If you do not want to sign up, below are 2 profiles you can use:
+
+The following credentials will log you into Tom's account
+Usename: test@a.com
+Password: password
+
+The following credentials will log you into Hannah's account
+Username: test@b.com
+Password: password
+
+### testing main functionality
+1. navigate to the friend's page
+2. click on the desired friend to start a session
+3. set time and amount of breaks
+4. wait for invitation to be accepted
+
+If on Tom's account you may wish to start a session with Hannah's account, then accept the request to start a session on Hannah's account
+
 ### Installing Flutter
 https://flutter.dev/docs/get-started/install  
 From this link, make sure to download flutter v2.5.x
